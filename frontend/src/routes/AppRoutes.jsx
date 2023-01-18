@@ -3,8 +3,9 @@ import Landing from 'scenes/landing'
 import Error from 'pages/Error'
 import Layout from 'scenes/layout'
 import Login from 'scenes/login'
+import Dashboard from 'scenes/dashboard'
 
-// import PrivateRoute from 'middleware/PrivateRoute'
+import PrivateRoute from 'middleware/PrivateRoute'
 
 function AppRoutes() {
   return (
@@ -16,9 +17,9 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
 
         {/* A PrivateRoute can only be accessed by a logged in user */}
-        {/* <Route element={<PrivateRoute />}>
+        <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-        </Route> */}
+        </Route>
       </Route>
     </Routes>
   )

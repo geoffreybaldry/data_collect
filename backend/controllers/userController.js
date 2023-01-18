@@ -7,15 +7,15 @@ const User = require('../models/user').user
 const registerUser = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password, role } = req.body
 
-  if (!firstName || !lastName || !email || !password || !role) {
+  if (!firstName || !lastName || !email || !password) {
     res.status(400)
     throw new Error('Please add all fields.')
   }
 
-  const userExists = await User.findOne({ email })
+  const userExists = await User.findOne({ where: { email: email } })
   if (userExists) {
     res.status(400)
-    throw new Error('User already exists')
+    throw new Error('User ' + email + ' already exists')
   }
 
   // Hash the password
@@ -27,8 +27,8 @@ const registerUser = asyncHandler(async (req, res) => {
       firstName,
       lastName,
       email,
-      hashedPassword,
-      role,
+      password: hashedPassword,
+      role: 'user', // Default role given to all new users
     })
 
     res.status(201).json({
@@ -50,7 +50,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   // Check for user email
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ where: { email: email } })
   if (!user) {
     res.status(400)
     throw new Error('User ' + email + ' does not exist')

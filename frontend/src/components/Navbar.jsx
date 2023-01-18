@@ -79,7 +79,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
               },
             }}
           >
-            Template App
+            Storage Guru
           </Typography>
         )}
 

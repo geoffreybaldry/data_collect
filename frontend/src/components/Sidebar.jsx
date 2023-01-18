@@ -29,7 +29,10 @@ import {
   // PieChartOutlined,
 } from '@mui/icons-material'
 import GavelIcon from '@mui/icons-material/Gavel'
+import FolderIcon from '@mui/icons-material/Folder'
 import NoteAddIcon from '@mui/icons-material/NoteAdd'
+import StorageIcon from '@mui/icons-material/Storage'
+import CloudSyncIcon from '@mui/icons-material/CloudSync'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
@@ -41,19 +44,29 @@ const navItems = [
     icon: <HomeOutlined />,
   },
   {
-    text: 'IPO View',
+    text: 'File Storage',
     location: null,
     icon: null,
   },
   {
-    text: 'View IPOs',
-    location: 'ipoview',
-    icon: <GavelIcon />,
+    text: 'Netapp CVO',
+    location: 'netappcvo',
+    icon: <FolderIcon />,
   },
   {
-    text: 'Create New IPO',
-    location: 'ipoCreate',
-    icon: <NoteAddIcon />,
+    text: 'Nasuni (Not yet)',
+    location: null,
+    icon: <CloudSyncIcon />,
+  },
+  {
+    text: 'Block Storage',
+    location: null,
+    icon: null,
+  },
+  {
+    text: 'Not Yet Implemented',
+    location: null,
+    icon: <StorageIcon />,
   },
 ]
 
@@ -102,7 +115,7 @@ const Sidebar = ({
                     color="primary"
                     onClick={() => navigate('/')}
                   >
-                    Template App
+                    Storage Guru
                   </Typography>
                 </Box>
                 {!isNonMobile && (

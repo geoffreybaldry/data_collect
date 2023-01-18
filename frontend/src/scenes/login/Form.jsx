@@ -19,7 +19,7 @@ const registerSchema = yup.object().shape({
   password: yup
     .string()
     .required('required')
-    .min(3, 'Password must be at least 5 characters'),
+    .min(3, 'Password must be at least 3 characters'),
 })
 
 const loginSchema = yup.object().shape({
