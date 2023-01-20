@@ -49,6 +49,11 @@ const loginUser = asyncHandler(async (req, res) => {
   console.log('Login attempt from ' + JSON.stringify(req.body))
   const { email, password } = req.body
 
+  if (!email || !password) {
+    res.status(400)
+    throw new Error('email and password are required fields.')
+  }
+
   // Check for user email
   const user = await User.findOne({ where: { email: email } })
   if (!user) {

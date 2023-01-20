@@ -4,7 +4,7 @@ const CloudManagerConnector =
   require('../models/cloudManagerConnector').cloudManagerConnector
 
 const upsertCloudManagerConnector = asyncHandler(async (req, res) => {
-  await CloudManagerConnector.sync()
+  // await CloudManagerConnector.sync()
   const cloudManagerConnector = await CloudManagerConnector.upsert({
     account: req.body.account,
     accountName: req.body.accountName,

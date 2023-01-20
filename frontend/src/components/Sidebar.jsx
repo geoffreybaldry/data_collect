@@ -44,29 +44,14 @@ const navItems = [
     icon: <HomeOutlined />,
   },
   {
-    text: 'File Storage',
-    location: null,
-    icon: null,
-  },
-  {
     text: 'Netapp CVO',
-    location: 'netappcvo',
-    icon: <FolderIcon />,
-  },
-  {
-    text: 'Nasuni (Not yet)',
-    location: null,
-    icon: <CloudSyncIcon />,
-  },
-  {
-    text: 'Block Storage',
     location: null,
     icon: null,
   },
   {
-    text: 'Not Yet Implemented',
-    location: null,
-    icon: <StorageIcon />,
+    text: 'Volumes',
+    location: 'netappcvovolumes',
+    icon: <FolderIcon />,
   },
 ]
 

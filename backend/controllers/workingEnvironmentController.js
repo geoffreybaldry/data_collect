@@ -4,7 +4,7 @@ const WorkingEnvironment =
   require('../models/workingEnvironment').workingEnvironment
 
 const upsertWorkingEnvironment = asyncHandler(async (req, res) => {
-  await WorkingEnvironment.sync()
+  // await WorkingEnvironment.sync()
   const workingEnvironment = await WorkingEnvironment.upsert({
     publicId: req.body.publicId,
     name: req.body.name,
