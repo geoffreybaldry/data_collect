@@ -9,14 +9,14 @@ const NETAPP_API_SERVICES_URL = process.env.NETAPP_API_SERVICES_URL
 const BACKEND_API_BASE_URL = process.env.BACKEND_API_BASE_URL
 
 const envs = {
-  prod: {
-    client_secret: process.env.svcClientSecretProd,
-    client_id: process.env.svcClientIdProd,
-  },
-  preprod: {
-    client_secret: process.env.svcClientSecretPreProd,
-    client_id: process.env.svcClientIdPreProd,
-  },
+  // prod: {
+  //   client_secret: process.env.svcClientSecretProd,
+  //   client_id: process.env.svcClientIdProd,
+  // },
+  // preprod: {
+  //   client_secret: process.env.svcClientSecretPreProd,
+  //   client_id: process.env.svcClientIdPreProd,
+  // },
   dev: {
     client_secret: process.env.svcClientSecretDev,
     client_id: process.env.svcClientIdDev,
@@ -76,6 +76,34 @@ const getWorkingEnvironments = async (
     return response.data.vsaWorkingEnvironments
   } catch (error) {
     throw error
+  }
+}
+
+const getAggregates = async (
+  access_token,
+  primaryCallbackUri,
+  workingEnvironmentId,
+  isHA
+) => {
+  const headers = {
+    Authorization: 'Bearer ' + access_token,
+  }
+
+  const url = isHA
+    ? primaryCallbackUri +
+      '/occm/api/aws/ha/aggregates?workingEnvironmentId=' +
+      workingEnvironmentId
+    : primaryCallbackUri +
+      '/occm/api/vsa/aggregates?workingEnvironmentId=' +
+      workingEnvironmentId
+  try {
+    const response = await axios.get(url, {
+      headers,
+    })
+    return response.data
+  } catch (error) {
+    // throw error
+    console.log('bad')
   }
 }
 
@@ -141,6 +169,22 @@ async function main() {
               BACKEND_API_BASE_URL + '/api/workingEnvironment',
               workingEnvironment
             )
+
+            // Get the aggregates on the working environment
+            const aggregates = await getAggregates(
+              access_token,
+              connector.primaryCallbackUri,
+              workingEnvironment.publicId,
+              workingEnvironment.isHA
+            )
+
+            for (const aggregate of aggregates) {
+              console.log('  - ' + aggregate.name)
+              await axios.post(BACKEND_API_BASE_URL + '/api/aggregate', {
+                ...aggregate,
+                workingEnvironmentId: workingEnvironment.publicId,
+              })
+            }
 
             // Get the volumes on the working environment
             const volumes = await getVolumes(
