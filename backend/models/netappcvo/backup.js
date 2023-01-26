@@ -54,7 +54,7 @@ const backup = instance.sequelize.define(
     },
     objectLock: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     backupPolicyName: {
       type: DataTypes.STRING,

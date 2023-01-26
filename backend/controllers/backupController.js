@@ -4,40 +4,41 @@ const { toBytes } = require('../utils/utils')
 const Backup = require('../models/netappcvo/backup').backup
 
 const upsertBackup = asyncHandler(async (req, res) => {
+  const obj = {
+    fileSystemId: req.body['file-system-id'],
+    name: req.body.name,
+    type: req.body.type,
+    style: req.body.style,
+    protocol: req.body.protocol,
+    svm: req.body.svm,
+    status: req.body.status,
+    backupStatus: req.body['backup-status'],
+    lastBackupCreationTime: req.body['last-backup-creation-time'],
+    snapshotCount: req.body['snapshot-count'],
+    lag: req.body.lag,
+    objectLock: req.body['object-lock'] ? req.body['object-lock'] : null,
+    backupPolicyName: req.body['backup-policy'].name,
+    backupPolicyRuleLabel: req.body['backup-policy']['rule'][0].label,
+    backupPolicyRuleRetention: req.body['backup-policy']['rule'][0].retention,
+    capacityAllocated: req.body.capacity.allocated,
+    capacityUsed: req.body.capacity.used,
+    capacityCharging: req.body.capacity.charging,
+    capacityLogicalUsedSize: req.body.capacity.logicalUsedSize,
+  }
+
+  console.log('Obj : ' + JSON.stringify(obj))
+
   try {
-    const backup = await Backup.upsert({
-      fileSystemId: req.body.fileSystemId,
-      name: req.body.name,
-      type: req.body.type,
-      style: req.body.style,
-      protocol: req.body.protocol,
-      svm: req.body.svm,
-      status: req.body.status,
-      backupStatus: req.body.backupStatus,
-      lastBackupCreationTime: req.body.lastBackupCreationTime,
-      snapshotCount: req.body.snapshotCount,
-      lag: req.body.lag,
-      objectLock: req.body.objectLock,
-      backupPolicyName: req.body.backupPolicyName,
-      backupPolicyRuleLabel: req.body.backupPolicyRuleLabel,
-      backupPolicyRuleRetention: req.body.backupPolicyRuleRetention,
-      capacityAllocated: req.body.capacityAllocated,
-      capacityUsed: req.body.capacityUsed,
-      capacityCharging: req.body.capacityCharging,
-      capacityLogicalUsedSize: req.body.capacityLogicalUsedSize,
+    const backup = await Backup.upsert(obj)
 
-      // Foreign key(s)
-      // volumeUUID: req.body.volumeUUID,
-    })
-
-    res.status(201).json(providerVolume)
+    res.status(201).json(backup)
   } catch (error) {
     res.status(400)
-    // console.log('Error with volume : ' + JSON.stringify(req.body))
+    console.log('Error with backup : ' + JSON.stringify(req.body))
     throw new Error(error)
   }
 })
 
 module.exports = {
-  upsertProviderVolume,
+  upsertBackup,
 }

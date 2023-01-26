@@ -16,14 +16,14 @@ const USER_EMAIL = process.env.USER_EMAIL
 const USER_PASSWORD = process.env.USER_PASSWORD
 
 const envs = {
-  // prod: {
-  //   client_secret: process.env.svcClientSecretProd,
-  //   client_id: process.env.svcClientIdProd,
-  // },
-  // preprod: {
-  //   client_secret: process.env.svcClientSecretPreProd,
-  //   client_id: process.env.svcClientIdPreProd,
-  // },
+  prod: {
+    client_secret: process.env.svcClientSecretProd,
+    client_id: process.env.svcClientIdProd,
+  },
+  preprod: {
+    client_secret: process.env.svcClientSecretPreProd,
+    client_id: process.env.svcClientIdPreProd,
+  },
   dev: {
     client_secret: process.env.svcClientSecretDev,
     client_id: process.env.svcClientIdDev,
@@ -282,22 +282,21 @@ async function main() {
               connector.agentId + 'clients'
             )
 
-            console.log('BACKUP : ' + JSON.stringify(backups))
+            // console.log('BACKUP : ' + JSON.stringify(backups))
 
-            for (const backup of backups) {
+            for (const backup of backups.volume) {
               console.log('  - (backup) ' + backup.name)
-              console.log('BACKUP : ' + JSON.stringify(backup))
-              // await axios.post(
-              //   BACKEND_API_BASE_URL + '/api/backup',
-              //   {
-              //     ...backup,
-              //   },
-              //   {
-              //     headers: {
-              //       Authorization: 'Bearer ' + backend_access_token,
-              //     },
-              //   }
-              // )
+              await axios.post(
+                BACKEND_API_BASE_URL + '/api/backup',
+                {
+                  ...backup,
+                },
+                {
+                  headers: {
+                    Authorization: 'Bearer ' + backend_access_token,
+                  },
+                }
+              )
             }
 
             // Get the aggregates on the working environment
