@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize')
-const DB = require('../services/db')
+const DB = require('../../services/db')
 
 const instance = DB.getInstance()
 
@@ -42,11 +42,11 @@ const cloudManagerConnector = instance.sequelize.define(
   }
 )
 
-const sync = async () => {
-  await cloudManagerConnector.sync()
-}
+// const sync = async () => {
+//   await cloudManagerConnector.sync()
+// }
 
-sync()
+// sync()
 
 module.exports = {
   cloudManagerConnector,

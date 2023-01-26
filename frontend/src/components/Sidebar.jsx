@@ -33,6 +33,9 @@ import FolderIcon from '@mui/icons-material/Folder'
 import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import StorageIcon from '@mui/icons-material/Storage'
 import CloudSyncIcon from '@mui/icons-material/CloudSync'
+import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices'
+import DnsIcon from '@mui/icons-material/Dns'
+import KeyIcon from '@mui/icons-material/Key'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
@@ -49,8 +52,38 @@ const navItems = [
     icon: null,
   },
   {
+    text: 'Credentials',
+    location: 'netappcvo/credentials',
+    icon: <KeyIcon />,
+  },
+  {
+    text: 'Connectors',
+    location: 'netappcvo/connectors',
+    icon: <ElectricalServicesIcon />,
+  },
+  {
+    text: 'Working Envs',
+    location: 'netappcvo/workingenvironments',
+    icon: <DnsIcon />,
+  },
+  {
+    text: 'Aggregates',
+    location: 'netappcvo/aggregates',
+    icon: <StorageIcon />,
+  },
+  {
+    text: 'CVO Volumes',
+    location: 'netappcvo/volumes',
+    icon: <FolderIcon />,
+  },
+  {
+    text: 'Some Other Storage',
+    location: null,
+    icon: null,
+  },
+  {
     text: 'Volumes',
-    location: 'netappcvovolumes',
+    location: 'otherstoragevolumes',
     icon: <FolderIcon />,
   },
 ]

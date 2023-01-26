@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux'
 import useFetch from 'hooks/useFetch'
 
 function NetappCVOVolumes() {
-  console.log('Loaded CVO Volumes')
   const theme = useTheme()
   const isNonMediumScreens = useMediaQuery('(min-width: 1200px)')
 
@@ -47,14 +46,14 @@ function NetappCVOVolumes() {
 
   const columns = [
     {
-      field: 'workingEnvironmentId',
+      field: 'workingEnvironmentPublicId',
       headerName: 'Working Environment ID',
       flex: 1,
     },
     {
       field: 'name',
       headerName: 'Name',
-      flex: 1,
+      flex: 2,
     },
     {
       field: 'uuid',
@@ -70,11 +69,13 @@ function NetappCVOVolumes() {
       field: 'sizeBytes',
       headerName: 'Size (Bytes)',
       flex: 1,
+      valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
       field: 'usedSizeBytes',
       headerName: 'Used Size (Bytes)',
       flex: 1,
+      valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
       field: 'junctionPath',
@@ -100,11 +101,13 @@ function NetappCVOVolumes() {
       field: 'compressionSpaceSavedBytes',
       headerName: 'Compression Space Saved (Bytes)',
       flex: 1,
+      valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
       field: 'deduplicationSpaceSavedBytes',
       headerName: 'Deduplication Space Saved (Bytes)',
       flex: 1,
+      valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
       field: 'thinProvisioning',
@@ -165,6 +168,7 @@ function NetappCVOVolumes() {
       field: 'maxGrowSizeBytes',
       headerName: 'Max Grow Size (Bytes)',
       flex: 1,
+      valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
       field: 'providerVolumeType',
@@ -180,6 +184,7 @@ function NetappCVOVolumes() {
       field: 'capacityTierUsedSizeBytes',
       headerName: 'Capacity Tier Used Size (Bytes)',
       flex: 1,
+      valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
       field: 'tieringPolicy',
@@ -195,6 +200,7 @@ function NetappCVOVolumes() {
       field: 'snapshotsUsedSizeBytes',
       headerName: 'Snapshot Used Size (Bytes)',
       flex: 1,
+      valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
   ]
 
@@ -236,8 +242,28 @@ function NetappCVOVolumes() {
           }}
         >
           <DataGrid
+            initialState={{
+              columns: {
+                columnVisibilityModel: {
+                  workingEnvironmentId: false,
+                  uuid: false,
+                  junctionPath: false,
+                  volumeTotalInodes: false,
+                  volumeUsedInodes: false,
+                  mountPoint: false,
+                  rootVolume: false,
+                  parentSnapshot: false,
+                  providerVolumeType: false,
+                  capacityTier: false,
+                  comment: false,
+                  snapshotsUsedSizeBytes: false,
+                  capacityTierUsedSizeBytes: false,
+                  maxGrowSizeBytes: false,
+                },
+              },
+            }}
             loading={loading}
-            getRowId={(row) => row.id}
+            getRowId={(row) => row.uuid}
             rows={(data && data.rows) || []}
             columns={columns}
             rowCount={(data && data.count) || 0}
@@ -255,7 +281,12 @@ function NetappCVOVolumes() {
             onSortModelChange={(newSortModel) => setSort(newSortModel)}
             components={{ Toolbar: DataGridCustomToolbar }}
             componentsProps={{
-              toolbar: { searchInput, setSearchInput, setSearch },
+              toolbar: {
+                searchInput,
+                setSearchInput,
+                setSearch,
+                csvOptions: { allColumns: true },
+              },
             }}
             // checkboxSelection={'true'}
           />

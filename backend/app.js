@@ -1,12 +1,27 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
 const cors = require('cors')
+const { errorHandler } = require('./middleware/errorMiddleware')
 const cloudManagerConnectorRoutes = require('./routes/cloudManagerConnectorRoutes')
 const aggregateRoutes = require('./routes/aggregateRoutes')
 const workingEnvironmentRoutes = require('./routes/workingEnvironmentRoutes')
 const volumeRoutes = require('./routes/volumeRoutes')
+const nodeRoutes = require('./routes/nodeRoutes')
+const instanceRoutes = require('./routes/instanceRoutes')
+const backupRoutes = require('./routes/backupRoutes')
+const providerVolumeRoutes = require('./routes/providerVolumeRoutes')
 const authRoutes = require('./routes/authRoutes')
-const { errorHandler } = require('./middleware/errorMiddleware')
+const credentialRoutes = require('./routes/credentialRoutes')
+const DB = require('./services/db')
+
+const instance = DB.getInstance()
+
+// The above route 'requires' will cause the DB models to be created downstream,
+// and populate the sequelize.models variable. Use it to create the associations
+require('./models/netappcvo/associations')(instance.sequelize.models)
+
+// Now that the models and associations are created, call sync to push to the DB
+instance.sequelize.sync()
 
 const PORT = process.env.PORT
 
@@ -21,7 +36,12 @@ app.use('/api/cloudManagerConnector', cloudManagerConnectorRoutes)
 app.use('/api/aggregate', aggregateRoutes)
 app.use('/api/workingEnvironment', workingEnvironmentRoutes)
 app.use('/api/volume', volumeRoutes)
+app.use('/api/providerVolume', providerVolumeRoutes)
+app.use('/api/node', nodeRoutes)
+app.use('/api/instance', instanceRoutes)
+app.use('/api/backup', backupRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/credential', credentialRoutes)
 
 // ErrorHandler after routes
 app.use(errorHandler)

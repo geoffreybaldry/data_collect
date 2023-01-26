@@ -1,22 +1,19 @@
 const { DataTypes } = require('sequelize')
-const DB = require('../services/db')
+const DB = require('../../services/db')
 
 const instance = DB.getInstance()
 
 const volume = instance.sequelize.define(
   'Volume',
   {
-    workingEnvironmentId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     uuid: {
-      type: DataTypes.UUID,
+      type: DataTypes.STRING,
       allowNull: false,
+      primaryKey: true,
       unique: true,
     },
     svmName: {
@@ -127,17 +124,26 @@ const volume = instance.sequelize.define(
       type: DataTypes.BIGINT,
       allowNull: true,
     },
+
+    // Foreign Key(s)
+    workingEnvironmentPublicId: {
+      type: DataTypes.STRING,
+      references: {
+        model: 'WorkingEnvironments',
+        key: 'publicId',
+      },
+    },
   },
   {
     timestamps: true,
   }
 )
 
-const sync = async () => {
-  await volume.sync()
-}
+// const sync = async () => {
+//   await volume.sync()
+// }
 
-sync()
+// sync()
 
 module.exports = {
   volume,

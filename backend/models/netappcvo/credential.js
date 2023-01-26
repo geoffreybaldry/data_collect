@@ -1,33 +1,30 @@
 const { DataTypes } = require('sequelize')
-const DB = require('../services/db')
+const DB = require('../../services/db')
 
 const instance = DB.getInstance()
 
-const workingEnvironment = instance.sequelize.define(
-  'WorkingEnvironment',
+const netappCVOCredential = instance.sequelize.define(
+  'NetappCVOCredential',
   {
-    publicId: {
+    accountName: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
-    name: {
+    accountId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    clientId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    tenantId: {
+    clientSecret: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    svmName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    isHA: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    workingEnvironmentType: {
+    comment: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -37,12 +34,12 @@ const workingEnvironment = instance.sequelize.define(
   }
 )
 
-const sync = async () => {
-  await workingEnvironment.sync()
-}
+// const sync = async () => {
+//   await netappCVOCredential.sync()
+// }
 
-sync()
+// sync()
 
 module.exports = {
-  workingEnvironment,
+  netappCVOCredential,
 }

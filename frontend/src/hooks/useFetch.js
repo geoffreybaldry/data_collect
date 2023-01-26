@@ -10,7 +10,7 @@ const useFetch = (url, options, params) => {
   }
 
   useEffect(() => {
-    console.log('Fetching URL : ' + url)
+    // console.log('Fetching URL : ' + url)
     fetch(url, options)
       .then(async (res) => {
         const isJson = res.headers

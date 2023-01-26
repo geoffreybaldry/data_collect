@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
 
 const WorkingEnvironment =
-  require('../models/workingEnvironment').workingEnvironment
+  require('../models/netappcvo/workingEnvironment').workingEnvironment
 
 const upsertWorkingEnvironment = asyncHandler(async (req, res) => {
   // await WorkingEnvironment.sync()

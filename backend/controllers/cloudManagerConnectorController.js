@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
 
 const CloudManagerConnector =
-  require('../models/cloudManagerConnector').cloudManagerConnector
+  require('../models/netappcvo/cloudManagerConnector').cloudManagerConnector
 
 const upsertCloudManagerConnector = asyncHandler(async (req, res) => {
   // await CloudManagerConnector.sync()

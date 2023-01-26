@@ -5,6 +5,7 @@ import Layout from 'scenes/layout'
 import Login from 'scenes/login'
 import Dashboard from 'scenes/dashboard'
 import NetappCVOVolumes from 'scenes/netappcvo/volumes'
+import NetappCVOCredentials from 'scenes/netappcvo/credentials'
 
 import PrivateRoute from 'middleware/PrivateRoute'
 
@@ -20,7 +21,11 @@ function AppRoutes() {
         {/* A PrivateRoute can only be accessed by a logged in user */}
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/netappcvovolumes" element={<NetappCVOVolumes />} />
+          <Route path="/netappcvo/volumes" element={<NetappCVOVolumes />} />
+          <Route
+            path="/netappcvo/credentials"
+            element={<NetappCVOCredentials />}
+          />
         </Route>
       </Route>
     </Routes>
