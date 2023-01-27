@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { protect } = require('../middleware/authMiddleware')
-const { upsertNode } = require('../controllers/nodeController')
+const { upsertNode, getNodes } = require('../controllers/nodeController')
 
-router.route('/').post(protect, upsertNode)
+router.route('/').get(protect, getNodes).post(protect, upsertNode)
 
 module.exports = router

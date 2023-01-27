@@ -3,6 +3,8 @@ const { toBytes } = require('../utils/utils')
 const { Op } = require('sequelize')
 
 const Volume = require('../models/netappcvo/volume').volume
+const WorkingEnvironment =
+  require('../models/netappcvo/workingEnvironment').workingEnvironment
 
 const getVolumes = asyncHandler(async (req, res) => {
   try {
@@ -102,6 +104,7 @@ const getVolumes = asyncHandler(async (req, res) => {
       limit: pageSize,
       offset: page * pageSize,
       where: filterFormatted,
+      include: WorkingEnvironment,
     })
 
     res.status(200).json(result)

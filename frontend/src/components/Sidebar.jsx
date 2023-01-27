@@ -17,16 +17,6 @@ import {
   ChevronLeft,
   ChevronRightOutlined,
   HomeOutlined,
-  // ShoppingCartOutlined,
-  // Groups2Outlined,
-  // ReceiptLongOutlined,
-  // PublicOutlined,
-  // PointOfSaleOutlined,
-  // TodayOutlined,
-  // CalendarMonthOutlined,
-  // AdminPanelSettingsOutlined,
-  // TrendingUpOutlined,
-  // PieChartOutlined,
 } from '@mui/icons-material'
 import GavelIcon from '@mui/icons-material/Gavel'
 import FolderIcon from '@mui/icons-material/Folder'
@@ -36,6 +26,11 @@ import CloudSyncIcon from '@mui/icons-material/CloudSync'
 import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices'
 import DnsIcon from '@mui/icons-material/Dns'
 import KeyIcon from '@mui/icons-material/Key'
+import GridViewIcon from '@mui/icons-material/GridView'
+import BorderVerticalIcon from '@mui/icons-material/BorderVertical'
+import CalendarViewWeekIcon from '@mui/icons-material/CalendarViewWeek'
+import FilterNoneIcon from '@mui/icons-material/FilterNone'
+import AppsIcon from '@mui/icons-material/Apps'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
@@ -67,9 +62,24 @@ const navItems = [
     icon: <DnsIcon />,
   },
   {
+    text: 'Nodes',
+    location: 'netappcvo/nodes',
+    icon: <BorderVerticalIcon />,
+  },
+  {
+    text: 'Instances',
+    location: 'netappcvo/instances',
+    icon: <FilterNoneIcon />,
+  },
+  {
     text: 'Aggregates',
     location: 'netappcvo/aggregates',
-    icon: <StorageIcon />,
+    icon: <CalendarViewWeekIcon />,
+  },
+  {
+    text: 'Provider Volumes',
+    location: 'netappcvo/providerVolumes',
+    icon: <AppsIcon />,
   },
   {
     text: 'CVO Volumes',

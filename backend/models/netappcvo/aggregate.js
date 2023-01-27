@@ -17,15 +17,15 @@ const aggregate = instance.sequelize.define(
       allowNull: false,
     },
     availableCapacityBytes: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     totalCapacityBytes: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     usedCapacityBytes: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     state: {
@@ -57,7 +57,7 @@ const aggregate = instance.sequelize.define(
       allowNull: false,
     },
     capacityTierUsedBytes: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     sidlEnabled: {

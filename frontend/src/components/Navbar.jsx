@@ -133,14 +133,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            {/* {user && (
-              <MenuItem>
-                <Avatar />
-                {user.firstName}
-              </MenuItem>
-            )} */}
-
-            <Divider />
+            {/* <Divider /> */}
 
             {user ? (
               <MenuItem onClick={onLogout}>

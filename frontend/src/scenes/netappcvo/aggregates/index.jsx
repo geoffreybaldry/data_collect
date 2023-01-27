@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import useFetch from 'hooks/useFetch'
 
-function NetappCVOVolumes() {
+function NetappCVOAggregates() {
   const theme = useTheme()
   const isNonMediumScreens = useMediaQuery('(min-width: 1200px)')
 
@@ -34,8 +34,8 @@ function NetappCVOVolumes() {
     setFilter(filterModel)
   }, [])
 
-  // Load the volume data from the DB
-  const url = 'http://localhost:5000/api/volume'
+  // Load the aggregate data from the DB
+  const url = 'http://localhost:5000/api/aggregate'
   const { data, loading, error } = useFetch(url, options.current, {
     page: page,
     pageSize: pageSize,
@@ -54,98 +54,27 @@ function NetappCVOVolumes() {
       },
     },
     {
-      field: 'workingEnvironmentPublicId',
-      headerName: 'Working Environment ID',
-      flex: 1,
-    },
-    {
       field: 'name',
       headerName: 'Name',
       flex: 2,
     },
     {
-      field: 'uuid',
-      headerName: 'UUID',
-      flex: 1,
-    },
-    {
-      field: 'svmName',
-      headerName: 'SVM Name',
-      flex: 1,
-    },
-    {
-      field: 'sizeBytes',
-      headerName: 'Size (Bytes)',
+      field: 'availableCapacityBytes',
+      headerName: 'Available Capacity (Bytes)',
       flex: 2,
       valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
-      field: 'usedSizeBytes',
-      headerName: 'Used Size (Bytes)',
+      field: 'totalCapacityBytes',
+      headerName: 'Total Capacity (Bytes)',
       flex: 2,
       valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
-      field: 'junctionPath',
-      headerName: 'Junction Path',
-      flex: 1,
-    },
-    {
-      field: 'volumeTotalInodes',
-      headerName: 'Total Inodes',
-      flex: 1,
-    },
-    {
-      field: 'volumeUsedInodes',
-      headerName: 'Used Inodes',
-      flex: 1,
-    },
-    {
-      field: 'mountPoint',
-      headerName: 'Mount Point',
-      flex: 1,
-    },
-    {
-      field: 'compressionSpaceSavedBytes',
-      headerName: 'Compression Space Saved (Bytes)',
+      field: 'usedCapacityBytes',
+      headerName: 'Used Capacity (Bytes)',
       flex: 2,
       valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'deduplicationSpaceSavedBytes',
-      headerName: 'Deduplication Space Saved (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'thinProvisioning',
-      headerName: 'Thin Provisioning',
-      flex: 1,
-    },
-    {
-      field: 'compression',
-      headerName: 'Compression',
-      flex: 1,
-    },
-    {
-      field: 'deduplication',
-      headerName: 'Deduplication',
-      flex: 1,
-    },
-    {
-      field: 'snapshotPolicy',
-      headerName: 'Snapshot Policy',
-      flex: 1,
-    },
-    {
-      field: 'securityStyle',
-      headerName: 'Security Style',
-      flex: 1,
-    },
-    {
-      field: 'rootVolume',
-      headerName: 'Root Volume',
-      flex: 1,
     },
     {
       field: 'state',
@@ -153,34 +82,28 @@ function NetappCVOVolumes() {
       flex: 1,
     },
     {
-      field: 'volumeType',
-      headerName: 'Volume Type',
+      field: 'encryptionType',
+      headerName: 'Encryption Type',
       flex: 1,
     },
     {
-      field: 'aggregateName',
-      headerName: 'Aggregate Name',
+      field: 'encryptionKeyId',
+      headerName: 'Encryption Key ID',
       flex: 1,
     },
     {
-      field: 'parentSnapshot',
-      headerName: 'Parent Snapshot',
+      field: 'isRoot',
+      headerName: 'Is Root?',
       flex: 1,
     },
     {
-      field: 'autoSizeMode',
-      headerName: 'Autosize Mode',
+      field: 'homeNode',
+      headerName: 'Home Node',
       flex: 1,
     },
     {
-      field: 'maxGrowSizeBytes',
-      headerName: 'Max Grow Size (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'providerVolumeType',
-      headerName: 'Provider Volume Type',
+      field: 'ownerNode',
+      headerName: 'Owner Node',
       flex: 1,
     },
     {
@@ -189,26 +112,35 @@ function NetappCVOVolumes() {
       flex: 1,
     },
     {
-      field: 'capacityTierUsedSizeBytes',
-      headerName: 'Capacity Tier Used Size (Bytes)',
+      field: 'capacityTierUsedBytes',
+      headerName: 'Capacity Tier Used (Bytes)',
       flex: 2,
       valueFormatter: (params) => params.value.toLocaleString('en-US'),
     },
     {
-      field: 'tieringPolicy',
-      headerName: 'Tiering Policy',
+      field: 'sidlEnabled',
+      headerName: 'SIDL Enabled?',
       flex: 1,
     },
     {
-      field: 'comment',
-      headerName: 'Comment',
+      field: 'snaplockType',
+      headerName: 'SnapLock Type',
       flex: 1,
     },
     {
-      field: 'snapshotsUsedSizeBytes',
-      headerName: 'Snapshot Used Size (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
+      field: 'evCompatibilityType',
+      headerName: 'Elastic Volume Compatibility Type',
+      flex: 1,
+    },
+    {
+      field: 'iops',
+      headerName: 'IOPS',
+      flex: 1,
+    },
+    {
+      field: 'workingEnvironmentPublicId',
+      headerName: 'Working Environment ID',
+      flex: 1,
     },
   ]
 
@@ -220,7 +152,10 @@ function NetappCVOVolumes() {
   return (
     <>
       <Box m="1.5rem 2.5rem">
-        <Header title="Netapp CVO Volumes" subtitle="All Netapp CVO volumes" />
+        <Header
+          title="Netapp CVO Aggregates"
+          subtitle="All Netapp CVO aggregates"
+        />
 
         <Box
           height="80vh"
@@ -253,30 +188,16 @@ function NetappCVOVolumes() {
             initialState={{
               columns: {
                 columnVisibilityModel: {
-                  workingEnvironmentPublicId: false,
-                  svmName: false,
-                  uuid: false,
-                  junctionPath: false,
-                  volumeTotalInodes: false,
-                  volumeUsedInodes: false,
-                  mountPoint: false,
-                  rootVolume: false,
-                  parentSnapshot: false,
-                  providerVolumeType: false,
-                  capacityTier: false,
-                  comment: false,
-                  snapshotsUsedSizeBytes: false,
-                  capacityTierUsedSizeBytes: false,
-                  maxGrowSizeBytes: false,
+                  // workingEnvironmentId: false,
                 },
               },
             }}
             loading={loading}
-            getRowId={(row) => row.uuid}
+            getRowId={(row) => row.aggregateId}
             rows={(data && data.rows) || []}
             columns={columns}
             rowCount={(data && data.count) || 0}
-            rowsPerPageOptions={[20, 50, 100]}
+            rowsPerPageOptions={[20, 30, 50, 100]}
             pagination
             page={page}
             pageSize={pageSize}
@@ -286,7 +207,6 @@ function NetappCVOVolumes() {
             onFilterModelChange={onFilterChange}
             onPageChange={(newPage) => setPage(newPage)}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            // onSortModelChange={(newSortModel) => setSort(...newSortModel)}
             onSortModelChange={(newSortModel) => setSort(newSortModel)}
             components={{ Toolbar: DataGridCustomToolbar }}
             componentsProps={{
@@ -306,4 +226,4 @@ function NetappCVOVolumes() {
   )
 }
 
-export default NetappCVOVolumes
+export default NetappCVOAggregates

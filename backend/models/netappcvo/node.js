@@ -6,12 +6,6 @@ const instance = DB.getInstance()
 const node = instance.sequelize.define(
   'Node',
   {
-    // id: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    //   primaryKey: true,
-    //   unique: true,
-    // },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
