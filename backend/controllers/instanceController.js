@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler')
+const { Op } = require('sequelize')
 const Instance = require('../models/netappcvo/instance').instance
 const WorkingEnvironment =
   require('../models/netappcvo/workingEnvironment').workingEnvironment

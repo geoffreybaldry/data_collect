@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import useFetch from 'hooks/useFetch'
 
-function NetappCVOAggregates() {
+function NetappCVOProviderVolumes() {
   const theme = useTheme()
   const isNonMediumScreens = useMediaQuery('(min-width: 1200px)')
 
@@ -34,8 +34,8 @@ function NetappCVOAggregates() {
     setFilter(filterModel)
   }, [])
 
-  // Load the aggregate data from the DB
-  const url = 'http://localhost:5000/api/aggregate'
+  // Load the working environment data from the DB
+  const url = 'http://localhost:5000/api/providerVolume'
   const { data, loading, error } = useFetch(url, options.current, {
     page: page,
     pageSize: pageSize,
@@ -46,35 +46,35 @@ function NetappCVOAggregates() {
 
   const columns = [
     {
-      field: '$WorkingEnvironment.name$',
+      field: '$Aggregate.WorkingEnvironment.name$',
       headerName: 'Working Environment Name',
-      flex: 2,
+      flex: 1,
       valueGetter: (params) => {
-        return params.row.WorkingEnvironment.name
+        return params.row.Aggregate.WorkingEnvironment.name
       },
+    },
+    {
+      field: '$Aggregate.name$',
+      headerName: 'Aggregate Name',
+      flex: 1,
+      valueGetter: (params) => {
+        return params.row.Aggregate.name
+      },
+    },
+    {
+      field: 'id',
+      headerName: 'ID',
+      flex: 1,
     },
     {
       field: 'name',
       headerName: 'Name',
-      flex: 2,
+      flex: 1,
     },
     {
-      field: 'availableCapacityBytes',
-      headerName: 'Available Capacity (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'totalCapacityBytes',
-      headerName: 'Total Capacity (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'usedCapacityBytes',
-      headerName: 'Used Capacity (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
+      field: 'sizeBytes',
+      headerName: 'Size (Bytes)',
+      flex: 1,
     },
     {
       field: 'state',
@@ -82,54 +82,23 @@ function NetappCVOAggregates() {
       flex: 1,
     },
     {
-      field: 'encryptionType',
-      headerName: 'Encryption Type',
+      field: 'device',
+      headerName: 'Device',
       flex: 1,
     },
     {
-      field: 'encryptionKeyId',
-      headerName: 'Encryption Key ID',
+      field: 'instanceId',
+      headerName: 'Instance ID',
       flex: 1,
     },
     {
-      field: 'isRoot',
-      headerName: 'Is Root?',
+      field: 'diskType',
+      headerName: 'Disk Type',
       flex: 1,
     },
     {
-      field: 'homeNode',
-      headerName: 'Home Node',
-      flex: 1,
-    },
-    {
-      field: 'ownerNode',
-      headerName: 'Owner Node',
-      flex: 1,
-    },
-    {
-      field: 'capacityTier',
-      headerName: 'Capacity Tier',
-      flex: 1,
-    },
-    {
-      field: 'capacityTierUsedBytes',
-      headerName: 'Capacity Tier Used (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'sidlEnabled',
-      headerName: 'SIDL Enabled?',
-      flex: 1,
-    },
-    {
-      field: 'snaplockType',
-      headerName: 'SnapLock Type',
-      flex: 1,
-    },
-    {
-      field: 'evCompatibilityType',
-      headerName: 'Elastic Volume Compatibility Type',
+      field: 'encrypted',
+      headerName: 'Encrypted?',
       flex: 1,
     },
     {
@@ -138,9 +107,19 @@ function NetappCVOAggregates() {
       flex: 1,
     },
     {
-      field: 'workingEnvironmentPublicId',
-      headerName: 'Working Environment ID',
+      field: 'throughput',
+      headerName: 'Throughput',
       flex: 1,
+    },
+    {
+      field: 'instance2Id',
+      headerName: 'Instance2 ID',
+      flex: 1,
+    },
+    {
+      field: 'aggregateId',
+      headerName: 'Aggregate ID',
+      flex: 2,
     },
   ]
 
@@ -153,8 +132,8 @@ function NetappCVOAggregates() {
     <>
       <Box m="1.5rem 2.5rem">
         <Header
-          title="Netapp CVO Aggregates"
-          subtitle="All Netapp CVO aggregates"
+          title="Netapp CVO Provider Volumes"
+          subtitle="All Netapp CVO provider volumes"
         />
 
         <Box
@@ -193,7 +172,7 @@ function NetappCVOAggregates() {
               },
             }}
             loading={loading}
-            getRowId={(row) => row.aggregateId}
+            getRowId={(row) => row.id}
             rows={(data && data.rows) || []}
             columns={columns}
             rowCount={(data && data.count) || 0}
@@ -226,4 +205,4 @@ function NetappCVOAggregates() {
   )
 }
 
-export default NetappCVOAggregates
+export default NetappCVOProviderVolumes

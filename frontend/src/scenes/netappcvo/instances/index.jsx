@@ -46,7 +46,7 @@ function NetappCVOInstances() {
 
   const columns = [
     {
-      field: 'we_name',
+      field: '$WorkingEnvironment.name$',
       headerName: 'Working Environment Name',
       flex: 1,
       valueGetter: (params) => {
@@ -128,7 +128,10 @@ function NetappCVOInstances() {
   return (
     <>
       <Box m="1.5rem 2.5rem">
-        <Header title="Netapp CVO Nodes" subtitle="All Netapp CVO nodes" />
+        <Header
+          title="Netapp CVO Instances"
+          subtitle="All Netapp CVO instances"
+        />
 
         <Box
           height="80vh"

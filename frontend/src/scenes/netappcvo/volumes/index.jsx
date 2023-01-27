@@ -46,7 +46,7 @@ function NetappCVOVolumes() {
 
   const columns = [
     {
-      field: 'we_name',
+      field: '$WorkingEnvironment.name$',
       headerName: 'Working Environment Name',
       flex: 2,
       valueGetter: (params) => {

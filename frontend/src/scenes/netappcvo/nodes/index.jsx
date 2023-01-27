@@ -46,7 +46,7 @@ function NetappCVONodes() {
 
   const columns = [
     {
-      field: 'we_name',
+      field: '$WorkingEnvironment.name$',
       headerName: 'Working Environment Name',
       flex: 1,
       valueGetter: (params) => {
