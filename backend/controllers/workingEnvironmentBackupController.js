@@ -1,10 +1,12 @@
 const asyncHandler = require('express-async-handler')
-const { Op } = require('sequelize')
-const Node = require('../models/netappcvo/node').node
+
+const WorkingEnvironmentBackup =
+  require('../models/netappcvo/workingEnvironmentBackup').workingEnvironmentBackup
+
 const WorkingEnvironment =
   require('../models/netappcvo/workingEnvironment').workingEnvironment
 
-const getNodes = asyncHandler(async (req, res) => {
+const getWorkingEnvironmentsBackup = asyncHandler(async (req, res) => {
   try {
     // Get pagination options from query params
     const {
@@ -106,7 +108,7 @@ const getNodes = asyncHandler(async (req, res) => {
         : {}
     console.log('Filter Formatted : ' + JSON.stringify(filterFormatted))
 
-    const result = await Node.findAndCountAll({
+    const result = await WorkingEnvironmentBackup.findAndCountAll({
       order: sortFormatted,
       limit: pageSize,
       offset: page * pageSize,
@@ -121,32 +123,51 @@ const getNodes = asyncHandler(async (req, res) => {
   }
 })
 
-const upsertNode = asyncHandler(async (req, res) => {
-  // console.log('node info : ' + JSON.stringify(req.body))
+const upsertWorkingEnvironmentBackup = asyncHandler(async (req, res) => {
+  console.log('\n\n\nReceived Obj : ' + JSON.stringify(req.body) + '\n\n\n')
+
+  const obj = {
+    name: req.body.name,
+    id: req.body.id,
+    region: req.body.region,
+    status: req.body.status,
+    ontapVersion: req.body['ontap-version'],
+    backupEnablementStatus: req.body['backup-enablement-status'],
+    type: req.body.type,
+    provider: req.body.provider,
+    providerAccountId: req.body['provider-account-id'],
+    providerAccountName: req.body['provider-account-name'],
+    bucket: req.body.bucket,
+    usedCapacityGB: req.body['used-capacity-gb'],
+    chargingCapacityBytes: req.body['charging-capacity'],
+    logicalUsedSizeBytes: req.body['logical-used-size'],
+    backedUpVolumeCount: req.body['backed-up-volume-count'],
+    totalVolumesCount: req.body['total-volumes-count'],
+    failedBackupVolumeCount: req.body['failed-backup-volume-count'],
+    autoBackupEnabled: req.body['auto-backup-enabled'],
+    ipSpace: req.body['ip-space'],
+    providerAccessKey: req.body['provider-access-key'],
+    deleteYearlySnapshots: req.body['delete-yearly-snapshots'],
+    exportExistingSnapshots: req.body['export-existing-snapshots'],
+
+    // Foreign keys(s)
+    workingEnvironmentPublicId: req.body.workingEnvironmentPublicId,
+  }
+
+  console.log('Obj : ' + JSON.stringify(obj))
 
   try {
-    const node = await Node.upsert({
-      name: req.body.name,
-      serialNumber: req.body.serialNumber,
-      systemId: req.body.systemId,
-      platformLicense: req.body.platformLicense,
-      platformSerialNumber: req.body.platformSerialNumber,
-      cloudProviderId: req.body.cloudProviderId,
-      healthy: req.body.healthy,
-      inTakeover: req.body.inTakeover,
+    const workingEnvironmentBackup = await WorkingEnvironmentBackup.upsert(obj)
 
-      // Foreign key(s)
-      workingEnvironmentPublicId: req.body.workingEnvironmentPublicId,
-    })
-
-    res.status(201).json(node)
+    res.status(201).json(workingEnvironmentBackup)
   } catch (error) {
     res.status(400)
+    console.log('Error with backup : ' + JSON.stringify(req.body))
     throw new Error(error)
   }
 })
 
 module.exports = {
-  upsertNode,
-  getNodes,
+  upsertWorkingEnvironmentBackup,
+  getWorkingEnvironmentsBackup,
 }

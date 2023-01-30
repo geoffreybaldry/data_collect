@@ -10,6 +10,7 @@ import NetappCVOWorkingEnvironments from 'scenes/netappcvo/workingEnvironments'
 import NetappCVONodes from 'scenes/netappcvo/nodes'
 import NetappCVOInstances from 'scenes/netappcvo/instances'
 import NetappCVOProviderVolumes from 'scenes/netappcvo/providerVolumes'
+import NetappCVOWorkingEnvironmentsBackup from 'scenes/netappcvo/workingEnvironmentsBackup'
 import NetappCVOCredentials from 'scenes/netappcvo/credentials'
 
 import PrivateRoute from 'middleware/PrivateRoute'
@@ -32,13 +33,17 @@ function AppRoutes() {
             element={<NetappCVOAggregates />}
           />
           <Route
-            path="/netappcvo/workingEnvironments"
+            path="/netappcvo/workingenvironments"
             element={<NetappCVOWorkingEnvironments />}
+          />
+          <Route
+            path="/netappcvo/workingenvironmentsbackup"
+            element={<NetappCVOWorkingEnvironmentsBackup />}
           />
           <Route path="/netappcvo/nodes" element={<NetappCVONodes />} />
           <Route path="/netappcvo/instances" element={<NetappCVOInstances />} />
           <Route
-            path="/netappcvo/providerVolumes"
+            path="/netappcvo/providervolumes"
             element={<NetappCVOProviderVolumes />}
           />
           <Route

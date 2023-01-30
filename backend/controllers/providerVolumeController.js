@@ -35,6 +35,7 @@ const getProviderVolumes = asyncHandler(async (req, res) => {
 
     const generateFilter = (filterList) => {
       console.log('Received filterList : ' + JSON.stringify(filterList))
+
       const filterObj = {}
       for (const filter of filterList) {
         switch (filter.operatorValue) {

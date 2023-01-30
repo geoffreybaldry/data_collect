@@ -27,6 +27,13 @@ module.exports = (models) => {
     foreignKey: 'workingEnvironmentPublicId',
   })
 
+  models.WorkingEnvironment.hasOne(models.WorkingEnvironmentBackup, {
+    foreignKey: 'workingEnvironmentPublicId',
+  })
+  models.WorkingEnvironmentBackup.belongsTo(models.WorkingEnvironment, {
+    foreignKey: 'workingEnvironmentPublicId',
+  })
+
   models.Aggregate.hasMany(models.ProviderVolume, {
     foreignKey: 'aggregateId',
   })

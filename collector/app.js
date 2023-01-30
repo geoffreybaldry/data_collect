@@ -146,6 +146,34 @@ const getVolumes = async (
   }
 }
 
+const getWorkingEnvironmentBackup = async (
+  access_token,
+  workingEnvironmentPublicId,
+  accountId,
+  agentId
+) => {
+  const headers = {
+    Authorization: 'Bearer ' + access_token,
+    'X-Agent-Id': agentId,
+  }
+
+  const url =
+    NETAPP_CLOUDMANAGER_URL +
+    '/account/' +
+    accountId +
+    '/providers/cloudmanager_cbs/api/v1/backup/working-environment/' +
+    workingEnvironmentPublicId
+
+  try {
+    const response = await axios.get(url, {
+      headers,
+    })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
 const getBackups = async (
   access_token,
   workingEnvironmentPublicId,
@@ -274,15 +302,51 @@ async function main() {
               )
             }
 
-            // Get the backups for the working environment
+            // Get the overall backup status for the working environment
+            try {
+              const workingEnvironmentBackup =
+                await getWorkingEnvironmentBackup(
+                  cloud_manager_access_token,
+                  workingEnvironment.publicId,
+                  connector.account,
+                  connector.agentId + 'clients'
+                )
+
+              console.log(
+                '  - (workingEnvironmentBackup) ' +
+                  workingEnvironmentBackup.name
+              )
+              console.log(
+                'WE BACKUP : ' + JSON.stringify(workingEnvironmentBackup)
+              )
+              await axios.post(
+                BACKEND_API_BASE_URL + '/api/workingEnvironmentBackup',
+                {
+                  ...workingEnvironmentBackup,
+                  workingEnvironmentPublicId: workingEnvironment.publicId,
+                },
+                {
+                  headers: {
+                    Authorization: 'Bearer ' + backend_access_token,
+                  },
+                }
+              )
+            } catch (error) {
+              console.log(
+                'Error with workingEnvironmentBackup ' +
+                  workingEnvironment.name +
+                  '. ' +
+                  error.message
+              )
+            }
+
+            // Get the individual volume backups for the working environment
             const backups = await getBackups(
               cloud_manager_access_token,
               workingEnvironment.publicId,
               connector.account,
               connector.agentId + 'clients'
             )
-
-            // console.log('BACKUP : ' + JSON.stringify(backups))
 
             for (const backup of backups.volume) {
               console.log('  - (backup) ' + backup.name)

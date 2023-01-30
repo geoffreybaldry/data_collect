@@ -31,6 +31,7 @@ import BorderVerticalIcon from '@mui/icons-material/BorderVertical'
 import CalendarViewWeekIcon from '@mui/icons-material/CalendarViewWeek'
 import FilterNoneIcon from '@mui/icons-material/FilterNone'
 import AppsIcon from '@mui/icons-material/Apps'
+import BackupIcon from '@mui/icons-material/Backup'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
@@ -57,9 +58,14 @@ const navItems = [
     icon: <ElectricalServicesIcon />,
   },
   {
-    text: 'Working Envs',
+    text: 'Working Environments',
     location: 'netappcvo/workingenvironments',
     icon: <DnsIcon />,
+  },
+  {
+    text: 'Working Env Backups',
+    location: 'netappcvo/workingenvironmentsbackup',
+    icon: <BackupIcon />,
   },
   {
     text: 'Nodes',
@@ -78,7 +84,7 @@ const navItems = [
   },
   {
     text: 'Provider Volumes',
-    location: 'netappcvo/providerVolumes',
+    location: 'netappcvo/providervolumes',
     icon: <AppsIcon />,
   },
   {
