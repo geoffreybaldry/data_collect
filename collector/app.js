@@ -316,9 +316,6 @@ async function main() {
                 '  - (workingEnvironmentBackup) ' +
                   workingEnvironmentBackup.name
               )
-              console.log(
-                'WE BACKUP : ' + JSON.stringify(workingEnvironmentBackup)
-              )
               await axios.post(
                 BACKEND_API_BASE_URL + '/api/workingEnvironmentBackup',
                 {
@@ -337,29 +334,6 @@ async function main() {
                   workingEnvironment.name +
                   '. ' +
                   error.message
-              )
-            }
-
-            // Get the individual volume backups for the working environment
-            const backups = await getBackups(
-              cloud_manager_access_token,
-              workingEnvironment.publicId,
-              connector.account,
-              connector.agentId + 'clients'
-            )
-
-            for (const backup of backups.volume) {
-              console.log('  - (backup) ' + backup.name)
-              await axios.post(
-                BACKEND_API_BASE_URL + '/api/backup',
-                {
-                  ...backup,
-                },
-                {
-                  headers: {
-                    Authorization: 'Bearer ' + backend_access_token,
-                  },
-                }
               )
             }
 
@@ -420,6 +394,42 @@ async function main() {
                 {
                   ...volume,
                   workingEnvironmentPublicId: workingEnvironment.publicId,
+                },
+                {
+                  headers: {
+                    Authorization: 'Bearer ' + backend_access_token,
+                  },
+                }
+              )
+            }
+
+            // Get the individual volume backups for the working environment
+            const backups = await getBackups(
+              cloud_manager_access_token,
+              workingEnvironment.publicId,
+              connector.account,
+              connector.agentId + 'clients'
+            )
+
+            // We want to create a volume 'hasOne' relationship to backups.
+            // A volume might not have a backup and vice-versa.
+            // When we insert the backup, we'll add the volume's id as a foreign key
+            // if it exists, and null if it doesn't
+            for (const backup of backups.volume) {
+              console.log('  - (backup) ' + backup.name)
+              // Check if we found an equiv volume for this backup
+              var volumeUUID = null
+              for (const volume of volumes) {
+                if (volume.uuid === backup['file-system-id']) {
+                  volumeUUID = volume.uuid
+                  break
+                }
+              }
+              await axios.post(
+                BACKEND_API_BASE_URL + '/api/backup',
+                {
+                  ...backup,
+                  volumeUUID: volumeUUID,
                 },
                 {
                   headers: {

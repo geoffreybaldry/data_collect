@@ -25,6 +25,9 @@ const upsertBackup = asyncHandler(async (req, res) => {
     capacityUsed: req.body.capacity.used,
     capacityCharging: req.body.capacity.charging,
     capacityLogicalUsedSize: req.body.capacity.logicalUsedSize,
+
+    // Foreign Key(s)
+    volumeUUID: req.body.volumeUUID,
   }
 
   console.log('Obj : ' + JSON.stringify(obj))

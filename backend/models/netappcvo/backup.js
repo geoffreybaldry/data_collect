@@ -86,13 +86,13 @@ const backup = instance.sequelize.define(
     },
 
     // Foreign Key(s)
-    // volumeUUID: {
-    //   type: DataTypes.STRING,
-    //   references: {
-    //     model: 'Volumes',
-    //     key: 'uuid',
-    //   },
-    // },
+    volumeUUID: {
+      type: DataTypes.STRING,
+      references: {
+        model: 'Volumes',
+        key: 'uuid',
+      },
+    },
   },
 
   {
