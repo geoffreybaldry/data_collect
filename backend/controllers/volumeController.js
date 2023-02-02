@@ -16,18 +16,6 @@ const getVolumes = asyncHandler(async (req, res) => {
       search = '',
       filter = null,
     } = req.query
-    console.log(
-      'Page : ' +
-        page +
-        ' pageSize : ' +
-        pageSize +
-        ' sort : ' +
-        sort +
-        ' search : ' +
-        search +
-        ' filter : ' +
-        filter
-    )
 
     const generateSort = (sortList) => {
       const sortFormatted = []
@@ -39,10 +27,8 @@ const getVolumes = asyncHandler(async (req, res) => {
 
     const sortList = JSON.parse(sort)
     const sortFormatted = sortList.length == 0 ? [] : generateSort(sortList)
-    console.log('Sort Formatted : ' + JSON.stringify(sortFormatted))
 
     const generateFilter = (filterList) => {
-      console.log('Received filterList : ' + JSON.stringify(filterList))
       const filterObj = {}
       for (const filter of filterList) {
         // if (!filter.value) continue
@@ -92,12 +78,10 @@ const getVolumes = asyncHandler(async (req, res) => {
     }
 
     const filterObj = JSON.parse(filter)
-    console.log('FilterObj : ' + JSON.stringify(filterObj))
     const filterFormatted =
       filterObj && filterObj.items && filterObj.items.length !== 0
         ? generateFilter(filterObj.items)
         : {}
-    console.log('Filter Formatted : ' + JSON.stringify(filterFormatted))
 
     const result = await Volume.findAndCountAll({
       order: sortFormatted,

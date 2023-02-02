@@ -46,8 +46,6 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 const loginUser = asyncHandler(async (req, res) => {
-  console.log('REQ headers: ' + JSON.stringify(req.headers))
-  console.log('Login attempt from ' + JSON.stringify(req.body))
   const { email, password } = req.body
 
   if (!email || !password) {
@@ -63,7 +61,6 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    console.log('Successful login for user: ' + user.email)
     res.json({
       id: user.id,
       firstName: user.firstName,

@@ -43,11 +43,11 @@ const user = instance.sequelize.define(
   }
 )
 
-const sync = async () => {
-  await user.sync()
-}
+// const sync = async () => {
+//   await user.sync()
+// }
 
-sync()
+// sync()
 
 module.exports = {
   user,

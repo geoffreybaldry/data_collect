@@ -30,15 +30,12 @@ const upsertBackup = asyncHandler(async (req, res) => {
     volumeUUID: req.body.volumeUUID,
   }
 
-  console.log('Obj : ' + JSON.stringify(obj))
-
   try {
     const backup = await Backup.upsert(obj)
 
     res.status(201).json(backup)
   } catch (error) {
     res.status(400)
-    console.log('Error with backup : ' + JSON.stringify(req.body))
     throw new Error(error)
   }
 })

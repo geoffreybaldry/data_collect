@@ -21,10 +21,8 @@ const getWorkingEnvironmentsBackup = asyncHandler(async (req, res) => {
       const sortFormatted = []
 
       for (const sort of sortList) {
-        console.log('SORT : ' + JSON.stringify(sort))
         const sortFields = sort.field.replace(/\$/g, '')
-        const sortfieldsList = sortFields.split('.')
-        console.log('SORTLIST : ' + JSON.stringify(sortfieldsList))
+        // const sortfieldsList = sortFields.split('.')
         switch (sortFields.length) {
           case 1:
             sortFormatted.push([sortFields[0], sort.sort.toUpperCase()])
@@ -50,10 +48,8 @@ const getWorkingEnvironmentsBackup = asyncHandler(async (req, res) => {
 
     const sortList = JSON.parse(sort)
     const sortFormatted = sortList.length == 0 ? [] : generateSort(sortList)
-    console.log('Sort Formatted : ' + JSON.stringify(sortFormatted))
 
     const generateFilter = (filterList) => {
-      console.log('Received filterList : ' + JSON.stringify(filterList))
       const filterObj = {}
       for (const filter of filterList) {
         switch (filter.operatorValue) {
@@ -101,12 +97,10 @@ const getWorkingEnvironmentsBackup = asyncHandler(async (req, res) => {
     }
 
     const filterObj = JSON.parse(filter)
-    console.log('FilterObj : ' + JSON.stringify(filterObj))
     const filterFormatted =
       filterObj && filterObj.items && filterObj.items.length !== 0
         ? generateFilter(filterObj.items)
         : {}
-    console.log('Filter Formatted : ' + JSON.stringify(filterFormatted))
 
     const result = await WorkingEnvironmentBackup.findAndCountAll({
       order: sortFormatted,
@@ -124,8 +118,6 @@ const getWorkingEnvironmentsBackup = asyncHandler(async (req, res) => {
 })
 
 const upsertWorkingEnvironmentBackup = asyncHandler(async (req, res) => {
-  console.log('\n\n\nReceived Obj : ' + JSON.stringify(req.body) + '\n\n\n')
-
   const obj = {
     name: req.body.name,
     id: req.body.id,
@@ -154,15 +146,12 @@ const upsertWorkingEnvironmentBackup = asyncHandler(async (req, res) => {
     workingEnvironmentPublicId: req.body.workingEnvironmentPublicId,
   }
 
-  console.log('Obj : ' + JSON.stringify(obj))
-
   try {
     const workingEnvironmentBackup = await WorkingEnvironmentBackup.upsert(obj)
 
     res.status(201).json(workingEnvironmentBackup)
   } catch (error) {
     res.status(400)
-    console.log('Error with backup : ' + JSON.stringify(req.body))
     throw new Error(error)
   }
 })

@@ -27,10 +27,8 @@ const getAggregates = asyncHandler(async (req, res) => {
 
     const sortList = JSON.parse(sort)
     const sortFormatted = sortList.length == 0 ? [] : generateSort(sortList)
-    console.log('Sort Formatted : ' + JSON.stringify(sortFormatted))
 
     const generateFilter = (filterList) => {
-      console.log('Received filterList : ' + JSON.stringify(filterList))
       const filterObj = {}
       for (const filter of filterList) {
         switch (filter.operatorValue) {
@@ -78,12 +76,10 @@ const getAggregates = asyncHandler(async (req, res) => {
     }
 
     const filterObj = JSON.parse(filter)
-    console.log('FilterObj : ' + JSON.stringify(filterObj))
     const filterFormatted =
       filterObj && filterObj.items && filterObj.items.length !== 0
         ? generateFilter(filterObj.items)
         : {}
-    console.log('Filter Formatted : ' + JSON.stringify(filterFormatted))
 
     const result = await Aggregate.findAndCountAll({
       order: sortFormatted,
@@ -101,8 +97,6 @@ const getAggregates = asyncHandler(async (req, res) => {
 })
 
 const upsertAggregate = asyncHandler(async (req, res) => {
-  // console.log('aggr info : ' + JSON.stringify(req.body))
-
   try {
     const aggregate = await Aggregate.upsert({
       // Surrogate Key because no aggregateId provided by API

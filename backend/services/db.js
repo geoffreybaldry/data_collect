@@ -8,7 +8,7 @@ const AURORA_PASSWORD = process.env.AURORA_PASSWORD
 
 const DIALECT = 'mysql'
 
-const CURRENT_LAMBDA_FUNCTION_TIMEOUT = 100000 // ms
+const CURRENT_LAMBDA_FUNCTION_TIMEOUT = 10000 // ms
 
 const pool = {
   max: 2, // Model.findAndCountAll issues 2 requests
@@ -20,7 +20,6 @@ const pool = {
 
 // A Singleton service class to contain calls to the Sequelize service
 class DB {
-  // constructor(dialect, storage) {
   constructor() {
     this.sequelize = new Sequelize(
       AURORA_DB_DATABASE,
@@ -29,8 +28,6 @@ class DB {
       {
         host: AURORA_DB_ENDPOINT,
         port: AURORA_DB_PORT,
-        // dialect: dialect,
-        // storage: storage,
         dialect: DIALECT,
         pool: pool,
       }
@@ -41,10 +38,19 @@ class DB {
   static getInstance() {
     if (!this.instance) {
       console.log('Creating new sequelize instance.')
-      // this.instance = new DB('sqlite', 'netapp_data.sqlite3')
       this.instance = new DB()
     }
     console.log('Using existing sequelize instance.')
+    // Some additional work here to make Sequelize work nicely with AWS Lambda - maybe not needed?
+    // restart connection pool to ensure connections are not re-used across invocations
+    // this.instance.sequelize.connectionManager.initPools()
+    // restore `getConnection()` if it has been overwritten by `close()`
+    // if (
+    //   this.instance.sequelize.connectionManager.hasOwnProperty('getConnection')
+    // ) {
+    //   delete this.instance.sequelize.connectionManager.getConnection
+    // }
+
     return this.instance
   }
 

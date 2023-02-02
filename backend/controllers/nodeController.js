@@ -19,10 +19,8 @@ const getNodes = asyncHandler(async (req, res) => {
       const sortFormatted = []
 
       for (const sort of sortList) {
-        console.log('SORT : ' + JSON.stringify(sort))
         const sortFields = sort.field.replace(/\$/g, '')
         const sortfieldsList = sortFields.split('.')
-        console.log('SORTLIST : ' + JSON.stringify(sortfieldsList))
         switch (sortFields.length) {
           case 1:
             sortFormatted.push([sortFields[0], sort.sort.toUpperCase()])
@@ -48,10 +46,8 @@ const getNodes = asyncHandler(async (req, res) => {
 
     const sortList = JSON.parse(sort)
     const sortFormatted = sortList.length == 0 ? [] : generateSort(sortList)
-    console.log('Sort Formatted : ' + JSON.stringify(sortFormatted))
 
     const generateFilter = (filterList) => {
-      console.log('Received filterList : ' + JSON.stringify(filterList))
       const filterObj = {}
       for (const filter of filterList) {
         switch (filter.operatorValue) {
@@ -99,12 +95,10 @@ const getNodes = asyncHandler(async (req, res) => {
     }
 
     const filterObj = JSON.parse(filter)
-    console.log('FilterObj : ' + JSON.stringify(filterObj))
     const filterFormatted =
       filterObj && filterObj.items && filterObj.items.length !== 0
         ? generateFilter(filterObj.items)
         : {}
-    console.log('Filter Formatted : ' + JSON.stringify(filterFormatted))
 
     const result = await Node.findAndCountAll({
       order: sortFormatted,
@@ -122,8 +116,6 @@ const getNodes = asyncHandler(async (req, res) => {
 })
 
 const upsertNode = asyncHandler(async (req, res) => {
-  // console.log('node info : ' + JSON.stringify(req.body))
-
   try {
     const node = await Node.upsert({
       name: req.body.name,

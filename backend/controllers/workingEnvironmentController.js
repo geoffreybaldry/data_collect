@@ -25,10 +25,8 @@ const getWorkingEnvironments = asyncHandler(async (req, res) => {
 
     const sortList = JSON.parse(sort)
     const sortFormatted = sortList.length == 0 ? [] : generateSort(sortList)
-    console.log('Sort Formatted : ' + JSON.stringify(sortFormatted))
 
     const generateFilter = (filterList) => {
-      console.log('Received filterList : ' + JSON.stringify(filterList))
       const filterObj = {}
       for (const filter of filterList) {
         switch (filter.operatorValue) {
@@ -76,12 +74,10 @@ const getWorkingEnvironments = asyncHandler(async (req, res) => {
     }
 
     const filterObj = JSON.parse(filter)
-    console.log('FilterObj : ' + JSON.stringify(filterObj))
     const filterFormatted =
       filterObj && filterObj.items && filterObj.items.length !== 0
         ? generateFilter(filterObj.items)
         : {}
-    console.log('Filter Formatted : ' + JSON.stringify(filterFormatted))
 
     const result = await WorkingEnvironment.findAndCountAll({
       order: sortFormatted,
