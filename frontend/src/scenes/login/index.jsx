@@ -49,7 +49,7 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.default}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: '1.5rem' }}>
-          Register your account here.
+          Login on Register your account here.
         </Typography>
         <Form />
       </Box>

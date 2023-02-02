@@ -92,7 +92,7 @@ const getProviderVolumes = asyncHandler(async (req, res) => {
 
     const result = await ProviderVolume.findAndCountAll({
       order: sortFormatted,
-      limit: pageSize,
+      limit: Number(pageSize),
       offset: page * pageSize,
       where: filterFormatted,
       include: [

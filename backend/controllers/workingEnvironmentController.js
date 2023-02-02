@@ -85,7 +85,7 @@ const getWorkingEnvironments = asyncHandler(async (req, res) => {
 
     const result = await WorkingEnvironment.findAndCountAll({
       order: sortFormatted,
-      limit: pageSize,
+      limit: Number(pageSize),
       offset: page * pageSize,
       where: filterFormatted,
     })

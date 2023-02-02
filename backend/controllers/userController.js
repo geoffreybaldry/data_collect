@@ -46,6 +46,7 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 const loginUser = asyncHandler(async (req, res) => {
+  console.log('REQ headers: ' + JSON.stringify(req.headers))
   console.log('Login attempt from ' + JSON.stringify(req.body))
   const { email, password } = req.body
 

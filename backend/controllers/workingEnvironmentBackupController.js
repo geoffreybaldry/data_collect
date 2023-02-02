@@ -110,7 +110,7 @@ const getWorkingEnvironmentsBackup = asyncHandler(async (req, res) => {
 
     const result = await WorkingEnvironmentBackup.findAndCountAll({
       order: sortFormatted,
-      limit: pageSize,
+      limit: Number(pageSize),
       offset: page * pageSize,
       where: filterFormatted,
       include: WorkingEnvironment,
