@@ -11,6 +11,8 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+
 function NetappCVOCredentials() {
   const theme = useTheme()
   const isNonMediumScreens = useMediaQuery('(min-width: 1200px)')
@@ -23,7 +25,7 @@ function NetappCVOCredentials() {
     },
   })
 
-  const url = 'http://localhost:5000/api/credential'
+  const url = API_BASE_URL + '/api/credential'
   const { data, loading, error } = useFetch(url, options.current)
 
   return (

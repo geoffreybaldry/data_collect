@@ -7,6 +7,8 @@ import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import useFetch from 'hooks/useFetch'
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+
 function NetappCVONodes() {
   const theme = useTheme()
   const isNonMediumScreens = useMediaQuery('(min-width: 1200px)')
@@ -35,7 +37,7 @@ function NetappCVONodes() {
   }, [])
 
   // Load the working environment data from the DB
-  const url = 'http://localhost:5000/api/node'
+  const url = API_BASE_URL + '/api/node'
   const { data, loading, error } = useFetch(url, options.current, {
     page: page,
     pageSize: pageSize,
