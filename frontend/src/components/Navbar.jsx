@@ -12,23 +12,23 @@ import { useDispatch } from 'react-redux'
 import { logout, setMode } from 'features/auth/authSlice'
 import {
   AppBar,
-  // Button,
   Box,
   Typography,
   IconButton,
-  // InputBase,
   Toolbar,
   Menu,
   MenuItem,
   useTheme,
-  // Avatar,
   Tooltip,
   Divider,
   ListItemIcon,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { useProSidebar } from 'react-pro-sidebar'
 
-const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
+// const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
+const Navbar = ({ user }) => {
+  const { collapseSidebar } = useProSidebar()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -62,7 +62,8 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
         {/* LEFT SIDE */}
         {user ? (
           <FlexBetween>
-            <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+            {/* <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}> */}
+            <IconButton onClick={() => collapseSidebar()}>
               <MenuIcon />
             </IconButton>
           </FlexBetween>

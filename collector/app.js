@@ -426,7 +426,7 @@ async function main() {
                 }
               }
               await axios.post(
-                BACKEND_API_BASE_URL + '/api/backup',
+                BACKEND_API_BASE_URL + '/api/volumebackup',
                 {
                   ...backup,
                   volumeUUID: volumeUUID,

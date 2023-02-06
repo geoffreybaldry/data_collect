@@ -161,7 +161,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/data-collect-serverless/dev/1675258410666-2023-02-01T13:33:30.666Z/data-collect-serverless.zip"
+          "S3Key": "serverless/data-collect-serverless/dev/1675437025858-2023-02-03T15:10:25.858Z/data-collect-serverless.zip"
         },
         "Handler": "handler.handler",
         "Runtime": "nodejs14.x",
@@ -179,14 +179,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionGiiw9Lk2fKPs1oNeD5Vm5LMBv8IUUYhU1iHuJU5cZA": {
+    "ApiLambdaVersion23DL97X6NCHxU1S23fI7Gz5aMOzhAW5ZOXd5gjOW5I": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "lqzGNqVu2MR08rpCjYWLf6Vxnx/wXKPsKEGC1HHoefQ="
+        "CodeSha256": "LzNC3A3rONQpbhRA6sEcE8a7kNQ/3n6RW2R3ovtnq9o="
       }
     },
     "HttpApi": {
@@ -297,7 +297,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionGiiw9Lk2fKPs1oNeD5Vm5LMBv8IUUYhU1iHuJU5cZA"
+        "Ref": "ApiLambdaVersion23DL97X6NCHxU1S23fI7Gz5aMOzhAW5ZOXd5gjOW5I"
       },
       "Export": {
         "Name": "sls-data-collect-serverless-dev-ApiLambdaFunctionQualifiedArn"

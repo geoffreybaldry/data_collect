@@ -5,17 +5,16 @@ const AURORA_DB_PORT = process.env.AURORA_DB_PORT
 const AURORA_DB_DATABASE = process.env.AURORA_DB_DATABASE
 const AURORA_USERNAME = process.env.AURORA_USERNAME
 const AURORA_PASSWORD = process.env.AURORA_PASSWORD
+const AURORA_DIALECT = process.env.AURORA_DIALECT
 
-const DIALECT = 'mysql'
-
-const CURRENT_LAMBDA_FUNCTION_TIMEOUT = 10000 // ms
+const LAMBDA_FUNCTION_TIMEOUT = process.env.LAMBDA_FUNCTION_TIMEOUT
 
 const pool = {
   max: 2, // Model.findAndCountAll issues 2 requests
   min: 0, // Cause connection pool eviction to eventually clean all connections
   idle: 0, // Make connections immediately available for cleanup after returning to pool
   acquire: 3000, // Fail fast if a connection takes too long to be established
-  evict: CURRENT_LAMBDA_FUNCTION_TIMEOUT,
+  evict: LAMBDA_FUNCTION_TIMEOUT,
 }
 
 // A Singleton service class to contain calls to the Sequelize service
@@ -28,7 +27,7 @@ class DB {
       {
         host: AURORA_DB_ENDPOINT,
         port: AURORA_DB_PORT,
-        dialect: DIALECT,
+        dialect: AURORA_DIALECT,
         pool: pool,
       }
     )

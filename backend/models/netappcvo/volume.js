@@ -133,6 +133,13 @@ const volume = instance.sequelize.define(
         key: 'publicId',
       },
     },
+    aggregateId: {
+      type: DataTypes.STRING,
+      references: {
+        model: 'Aggregates',
+        key: 'aggregateId', // Surrogate Key because API does not provide an aggregateId
+      },
+    },
   },
   {
     timestamps: true,

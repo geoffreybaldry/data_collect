@@ -1,4 +1,5 @@
 module.exports = (models) => {
+  // Working Environment has many Aggregates
   models.WorkingEnvironment.hasMany(models.Aggregate, {
     foreignKey: 'workingEnvironmentPublicId',
   })
@@ -6,6 +7,7 @@ module.exports = (models) => {
     foreignKey: 'workingEnvironmentPublicId',
   })
 
+  // Working Environment has many Volumes
   models.WorkingEnvironment.hasMany(models.Volume, {
     foreignKey: 'workingEnvironmentPublicId',
   })
@@ -13,6 +15,7 @@ module.exports = (models) => {
     foreignKey: 'workingEnvironmentPublicId',
   })
 
+  // Working Environment has many Nodes
   models.WorkingEnvironment.hasMany(models.Node, {
     foreignKey: 'workingEnvironmentPublicId',
   })
@@ -20,6 +23,7 @@ module.exports = (models) => {
     foreignKey: 'workingEnvironmentPublicId',
   })
 
+  // Working Environment has many Instances
   models.WorkingEnvironment.hasMany(models.Instance, {
     foreignKey: 'workingEnvironmentPublicId',
   })
@@ -27,6 +31,7 @@ module.exports = (models) => {
     foreignKey: 'workingEnvironmentPublicId',
   })
 
+  // Working Environment has one WorkingEnvironmentBackup
   models.WorkingEnvironment.hasOne(models.WorkingEnvironmentBackup, {
     foreignKey: 'workingEnvironmentPublicId',
   })
@@ -34,10 +39,27 @@ module.exports = (models) => {
     foreignKey: 'workingEnvironmentPublicId',
   })
 
+  // Aggregate has may ProviderVolumes
   models.Aggregate.hasMany(models.ProviderVolume, {
     foreignKey: 'aggregateId',
   })
   models.ProviderVolume.belongsTo(models.Aggregate, {
     foreignKey: 'aggregateId',
+  })
+
+  // Aggregate has may Volumes
+  models.Aggregate.hasMany(models.Volume, {
+    foreignKey: 'aggregateId',
+  })
+  models.Volume.belongsTo(models.Aggregate, {
+    foreignKey: 'aggregateId',
+  })
+
+  // Volume has one VolumeBackup
+  models.Volume.hasOne(models.VolumeBackup, {
+    foreignKey: 'volumeUUID',
+  })
+  models.VolumeBackup.belongsTo(models.Volume, {
+    foreignKey: 'volumeUUID',
   })
 }
