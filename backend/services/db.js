@@ -20,17 +20,24 @@ const pool = {
 // A Singleton service class to contain calls to the Sequelize service
 class DB {
   constructor() {
-    this.sequelize = new Sequelize(
-      AURORA_DB_DATABASE,
-      AURORA_USERNAME,
-      AURORA_PASSWORD,
-      {
-        host: AURORA_DB_ENDPOINT,
-        port: AURORA_DB_PORT,
+    if (AURORA_DIALECT === 'sqlite') {
+      this.sequelize = new Sequelize({
         dialect: AURORA_DIALECT,
-        pool: pool,
-      }
-    )
+        storage: 'data_collect.sqlite3',
+      })
+    } else {
+      this.sequelize = new Sequelize(
+        AURORA_DB_DATABASE,
+        AURORA_USERNAME,
+        AURORA_PASSWORD,
+        {
+          host: AURORA_DB_ENDPOINT,
+          port: AURORA_DB_PORT,
+          dialect: AURORA_DIALECT,
+          pool: pool,
+        }
+      )
+    }
   }
 
   // Lazy initialization of the instance

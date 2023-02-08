@@ -96,7 +96,7 @@ function ProSideBar() {
             </MenuItem>
           </SubMenu>
         </SubMenu>
-        <SubMenu icon={<SdStorageIcon />} label="Hitachi"></SubMenu>
+        <SubMenu icon={<SdStorageIcon />} label="Other Storage"></SubMenu>
       </Menu>
     </Sidebar>
   )
