@@ -2,6 +2,9 @@ const axios = require('axios')
 const dotenv = require('dotenv').config()
 const FormData = require('form-data')
 
+// Turn off SSL checking
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
 // Environment variables
 const NETAPP_OAUTH_URL = process.env.NETAPP_OAUTH_URL
 const NETAPP_API_URL = process.env.NETAPP_API_URL
@@ -14,6 +17,9 @@ const CLIENT_ID = process.env.CLIENT_ID
 
 const USER_EMAIL = process.env.USER_EMAIL
 const USER_PASSWORD = process.env.USER_PASSWORD
+
+const ONTAP_USERNAME = process.env.ONTAP_USERNAME
+const ONTAP_PASSWORD = process.env.ONTAP_PASSWORD
 
 const envs = {
   prod: {
@@ -50,6 +56,23 @@ const getAccessToken = async (env) => {
     return response.data.access_token
   } catch (error) {
     console.log(error)
+  }
+}
+
+const getTenancyAccounts = async (access_token) => {
+  const API_URL = '/tenancy/account'
+
+  const headers = {
+    Authorization: 'Bearer ' + access_token,
+  }
+
+  try {
+    const response = await axios.get(NETAPP_CLOUDMANAGER_URL + API_URL, {
+      headers,
+    })
+    return response.data
+  } catch (error) {
+    throw error
   }
 }
 
@@ -203,6 +226,23 @@ const getBackups = async (
   }
 }
 
+const getClusterMgmtAddr = async (workingEnvironment) => {
+  const lifs = workingEnvironment.ontapClusterProperties.nodes[0].lifs
+  for (const lif of lifs) {
+    if (lif.lifType === 'Cluster Management') {
+      return lif.ip
+    }
+  }
+}
+
+const getAggregateId = (aggregates, aggregateName) => {
+  for (const aggregate of aggregates) {
+    if (aggregate.name === aggregateName) {
+      return aggregate.uuid
+    }
+  }
+}
+
 async function main() {
   // Get an access token for sending data to backend
   const options = {
@@ -221,6 +261,17 @@ async function main() {
   // Get an access token form accessing cloud manager (for backup info)
   const cloud_manager_access_token = await getAccessToken()
   console.log('Got CloudManager access token : ' + cloud_manager_access_token)
+
+  // Get tenancy account ingo
+  const accounts = await getTenancyAccounts(cloud_manager_access_token)
+  for (const account of accounts) {
+    console.log(account.accountName)
+    await axios.post(BACKEND_API_BASE_URL + '/api/account', account, {
+      headers: {
+        Authorization: 'Bearer ' + backend_access_token,
+      },
+    })
+  }
 
   for (const env of Object.keys(envs)) {
     // Get an access token
@@ -255,7 +306,15 @@ async function main() {
 
         if (workingEnvironments) {
           for (const workingEnvironment of workingEnvironments) {
-            console.log(' - (Working Environment) ' + workingEnvironment.name)
+            const clusterMgmtAddr = await getClusterMgmtAddr(workingEnvironment)
+            console.log(
+              ' - (Working Environment) ' +
+                workingEnvironment.name +
+                ' (clusterMgmtAddr ' +
+                clusterMgmtAddr +
+                ')'
+            )
+
             await axios.post(
               BACKEND_API_BASE_URL + '/api/workingEnvironment',
               workingEnvironment,
@@ -345,13 +404,43 @@ async function main() {
               workingEnvironment.isHA
             )
 
+            // This API does not include a suitable aggregateId, so let's get the UUID
+            // directly from the ONTAP API
+            const aggregatesONTAPAPI = await axios.get(
+              'https://' +
+                clusterMgmtAddr +
+                '/api/storage/aggregates?return_records=true',
+              {
+                auth: {
+                  username: ONTAP_USERNAME,
+                  password: ONTAP_PASSWORD,
+                },
+              }
+            )
+
+            console.log(
+              'AggregatesONTAPI : ' + JSON.stringify(aggregatesONTAPAPI.data)
+            )
+
             for (const aggregate of aggregates) {
-              console.log('  - (aggregate) ' + aggregate.name)
+              // Find the aggregate UUID from the ONTAPAPI call
+              const aggregateId = getAggregateId(
+                aggregatesONTAPAPI.data.records,
+                aggregate.name
+              )
+              console.log(
+                '  - (aggregate) ' + aggregate.name + ' (' + aggregateId + ')'
+              )
+
+              //process.exit()
               await axios.post(
                 BACKEND_API_BASE_URL + '/api/aggregate',
                 {
                   ...aggregate,
-                  workingEnvironmentPublicId: workingEnvironment.publicId,
+                  ...{
+                    aggregateId: aggregateId,
+                    workingEnvironmentPublicId: workingEnvironment.publicId,
+                  },
                 },
                 {
                   headers: {
@@ -367,8 +456,7 @@ async function main() {
                   BACKEND_API_BASE_URL + '/api/providerVolume',
                   {
                     ...providerVolume,
-                    aggregateId:
-                      workingEnvironment.publicId + ':' + aggregate.name,
+                    aggregateId: aggregateId,
                   },
                   {
                     headers: {
@@ -388,12 +476,21 @@ async function main() {
             )
 
             for (const volume of volumes) {
+              // Get the volume's aggregateId
+              const aggregateId = getAggregateId(
+                aggregatesONTAPAPI.data.records,
+                volume.aggregateName
+              )
+
               console.log('  - (volume) ' + volume.name)
               await axios.post(
                 BACKEND_API_BASE_URL + '/api/volume',
                 {
                   ...volume,
-                  workingEnvironmentPublicId: workingEnvironment.publicId,
+                  ...{
+                    aggregateId: aggregateId,
+                    workingEnvironmentPublicId: workingEnvironment.publicId,
+                  },
                 },
                 {
                   headers: {

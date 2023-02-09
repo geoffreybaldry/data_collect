@@ -97,10 +97,12 @@ const getAggregates = asyncHandler(async (req, res) => {
 })
 
 const upsertAggregate = asyncHandler(async (req, res) => {
+  console.log('\n\n\nDATA : ' + JSON.stringify(req.body))
   try {
     const aggregate = await Aggregate.upsert({
       // Surrogate Key because no aggregateId provided by API
-      aggregateId: req.body.workingEnvironmentPublicId + ':' + req.body.name,
+      // aggregateId: req.body.workingEnvironmentPublicId + ':' + req.body.name,
+      aggregateId: req.body.aggregateId,
 
       name: req.body.name,
       availableCapacityBytes: toBytes(req.body.availableCapacity),

@@ -1,12 +1,8 @@
 const asyncHandler = require('express-async-handler')
-const { toBytes } = require('../utils/utils')
 const { Op } = require('sequelize')
+const Account = require('../models/netappcvo/account').account
 
-const Volume = require('../models/netappcvo/volume').volume
-const WorkingEnvironment =
-  require('../models/netappcvo/workingEnvironment').workingEnvironment
-
-const getVolumes = asyncHandler(async (req, res) => {
+const getAccounts = asyncHandler(async (req, res) => {
   try {
     // Get pagination options from query params
     const {
@@ -19,8 +15,29 @@ const getVolumes = asyncHandler(async (req, res) => {
 
     const generateSort = (sortList) => {
       const sortFormatted = []
+
       for (const sort of sortList) {
-        sortFormatted.push([sort.field, sort.sort.toUpperCase()])
+        const sortFields = sort.field.replace(/\$/g, '')
+        const sortfieldsList = sortFields.split('.')
+        switch (sortFields.length) {
+          case 1:
+            sortFormatted.push([sortFields[0], sort.sort.toUpperCase()])
+          case 2:
+            sortFormatted.push([
+              sortFields[0],
+              sortFields[1],
+              sort.sort.toUpperCase(),
+            ])
+          case 3:
+            sortFormatted.push([
+              sortFields[0],
+              sortFields[1],
+              sortFields[2],
+              sort.sort.toUpperCase(),
+            ])
+        }
+
+        // sortFormatted.push([sort.field, sort.sort.toUpperCase()])
       }
       return sortFormatted
     }
@@ -31,8 +48,6 @@ const getVolumes = asyncHandler(async (req, res) => {
     const generateFilter = (filterList) => {
       const filterObj = {}
       for (const filter of filterList) {
-        // if (!filter.value) continue
-
         switch (filter.operatorValue) {
           case 'equals':
             'value' in filter &&
@@ -83,7 +98,7 @@ const getVolumes = asyncHandler(async (req, res) => {
         ? generateFilter(filterObj.items)
         : {}
 
-    const result = await Volume.findAndCountAll({
+    const result = await Account.findAndCountAll({
       order: sortFormatted,
       limit: Number(pageSize),
       offset: page * pageSize,
@@ -98,55 +113,19 @@ const getVolumes = asyncHandler(async (req, res) => {
   }
 })
 
-const upsertVolume = asyncHandler(async (req, res) => {
+const upsertAccount = asyncHandler(async (req, res) => {
   try {
-    const volume = await Volume.upsert({
-      name: req.body.name,
-      uuid: req.body.uuid,
-      svmName: req.body.svmName,
-      sizeBytes: req.body.size ? toBytes(req.body.size) : null,
-      usedSizeBytes: req.body.usedSize ? toBytes(req.body.usedSize) : null,
-      junctionPath: req.body.junctionPath,
-      volumeTotalInodes: req.body.volumeTotalInodes,
-      volumeUsedInodes: req.body.volumeUsedInodes,
-      mountPoint: req.body.mountPoint,
-      compressionSpaceSavedBytes: req.body.compressionSpaceSaved
-        ? toBytes(req.body.compressionSpaceSaved)
-        : null,
-      deduplicationSpaceSavedBytes: req.body.deduplicationSpaceSaved
-        ? toBytes(req.body.deduplicationSpaceSaved)
-        : null,
-      thinProvisioning: req.body.thinProvisioning,
-      compression: req.body.compression,
-      deduplication: req.body.deduplication,
-      snapshotPolicy: req.body.snapshotPolicy,
-      securityStyle: req.body.securityStyle,
-      rootVolume: req.body.rootVolume,
-      state: req.body.state,
-      volumeType: req.body.volumeType,
-      aggregateName: req.body.aggregateName,
-      parentSnapshot: req.body.parentSnapshot,
-      autoSizeMode: req.body.autoSizeMode,
-      maxGrowSizeBytes: req.body.maxGrowSize
-        ? toBytes(req.body.maxGrowSize)
-        : null,
-      providerVolumeType: req.body.providerVolumeType,
-      capacityTier: req.body.capacityTier,
-      capacityTierUsedSizeBytes: req.body.capacityTierUsedSize
-        ? toBytes(req.body.capacityTierUsedSize)
-        : null,
-      tieringPolicy: req.body.tieringPolicy,
-      comment: req.body.comment,
-      snapshotsUsedSizeBytes: req.body.snapshotsUsedSize
-        ? toBytes(req.body.snapshotsUsedSize)
-        : null,
-
-      // Foreign Key(s)
-      workingEnvironmentPublicId: req.body.workingEnvironmentPublicId,
-      aggregateId: req.body.aggregateId,
+    const account = await Account.upsert({
+      accountPublicId: req.body.accountPublicId,
+      accountName: req.body.accountName,
+      isSaas: req.body.isSaas,
+      isGov: req.body.isGov,
+      isPrivatePreviewEnabled: req.body.isPrivatePreviewEnabled,
+      is3rdPartyServicesEnabled: req.body.is3rdPartyServicesEnabled,
+      accountSerial: req.body.accountSerial,
     })
 
-    res.status(201).json(volume)
+    res.status(201).json(account)
   } catch (error) {
     res.status(400)
     throw new Error(error)
@@ -154,6 +133,6 @@ const upsertVolume = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-  upsertVolume,
-  getVolumes,
+  upsertAccount,
+  getAccounts,
 }

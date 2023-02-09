@@ -56,6 +56,11 @@ function NetappCVOAggregates() {
       },
     },
     {
+      field: 'aggregateId',
+      headerName: 'UUID',
+      flex: 1,
+    },
+    {
       field: 'name',
       headerName: 'Name',
       flex: 2,
@@ -190,7 +195,7 @@ function NetappCVOAggregates() {
             initialState={{
               columns: {
                 columnVisibilityModel: {
-                  // workingEnvironmentId: false,
+                  aggregateId: false,
                 },
               },
             }}
