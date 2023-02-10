@@ -10,7 +10,7 @@ const workingEnvironment = instance.sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,
-      // unique: true,
+      unique: true,
     },
     name: {
       type: DataTypes.STRING,

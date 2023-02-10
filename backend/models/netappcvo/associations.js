@@ -1,4 +1,12 @@
 module.exports = (models) => {
+  // Account has many connectors
+  models.Account.hasMany(models.CloudManagerConnector, {
+    foreignKey: 'account',
+  })
+  models.CloudManagerConnector.belongsTo(models.Account, {
+    foreignKey: 'account',
+  })
+
   // Working Environment has many Aggregates
   models.WorkingEnvironment.hasMany(models.Aggregate, {
     foreignKey: 'workingEnvironmentPublicId',

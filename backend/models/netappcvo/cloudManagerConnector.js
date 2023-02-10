@@ -6,10 +6,10 @@ const instance = DB.getInstance()
 const cloudManagerConnector = instance.sequelize.define(
   'CloudManagerConnector',
   {
-    account: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    // account: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
     accountName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -17,6 +17,7 @@ const cloudManagerConnector = instance.sequelize.define(
     occm: {
       type: DataTypes.STRING,
       allowNull: false,
+      primaryKey: true,
       unique: true,
     },
     agentId: {
@@ -35,6 +36,15 @@ const cloudManagerConnector = instance.sequelize.define(
     createDate: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+
+    // Foreign Key(s)
+    account: {
+      type: DataTypes.STRING,
+      references: {
+        model: 'Accounts',
+        key: 'accountPublicId',
+      },
     },
   },
   {
