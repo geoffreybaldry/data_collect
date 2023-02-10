@@ -32,6 +32,7 @@ import CalendarViewWeekIcon from '@mui/icons-material/CalendarViewWeek'
 import FilterNoneIcon from '@mui/icons-material/FilterNone'
 import AppsIcon from '@mui/icons-material/Apps'
 import BackupIcon from '@mui/icons-material/Backup'
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
@@ -46,6 +47,11 @@ const navItems = [
     text: 'Netapp CVO',
     location: null,
     icon: null,
+  },
+  {
+    text: 'Accounts',
+    location: 'netappcvo/accounts',
+    icon: <AccountBalanceIcon />,
   },
   {
     text: 'Credentials',

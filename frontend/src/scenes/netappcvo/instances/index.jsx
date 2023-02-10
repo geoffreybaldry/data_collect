@@ -50,6 +50,11 @@ function NetappCVOInstances() {
 
   const columns = [
     {
+      field: 'updatedAt',
+      headerName: 'Updated At',
+      flex: 1,
+    },
+    {
       field: '$WorkingEnvironment.name$',
       headerName: 'Working Environment Name',
       flex: 1,

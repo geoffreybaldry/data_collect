@@ -48,6 +48,11 @@ function NetappCVOProviderVolumes() {
 
   const columns = [
     {
+      field: 'updatedAt',
+      headerName: 'Updated At',
+      flex: 1,
+    },
+    {
       field: '$Aggregate.WorkingEnvironment.name$',
       headerName: 'Working Environment Name',
       flex: 1,

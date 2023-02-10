@@ -48,6 +48,11 @@ function NetappCVOWorkingEnvironments() {
 
   const columns = [
     {
+      field: 'updatedAt',
+      headerName: 'Updated At',
+      flex: 1,
+    },
+    {
       field: 'publicId',
       headerName: 'Public ID',
       flex: 1,

@@ -34,7 +34,7 @@ const cloudManagerConnector = instance.sequelize.define(
       allowNull: false,
     },
     createDate: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
 

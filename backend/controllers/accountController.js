@@ -103,7 +103,7 @@ const getAccounts = asyncHandler(async (req, res) => {
       limit: Number(pageSize),
       offset: page * pageSize,
       where: filterFormatted,
-      include: WorkingEnvironment,
+      // include: WorkingEnvironment,
     })
 
     res.status(200).json(result)

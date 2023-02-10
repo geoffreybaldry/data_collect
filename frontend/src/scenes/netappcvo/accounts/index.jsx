@@ -9,7 +9,7 @@ import useFetch from 'hooks/useFetch'
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 
-function NetappCVOAggregates() {
+function NetappCVOAccounts() {
   const theme = useTheme()
   const isNonMediumScreens = useMediaQuery('(min-width: 1200px)')
 
@@ -36,8 +36,10 @@ function NetappCVOAggregates() {
     setFilter(filterModel)
   }, [])
 
-  // Load the aggregate data from the DB
-  const url = API_BASE_URL + '/api/aggregate'
+  // Load the working environment data from the DB
+  // const url = 'http://localhost:5000/api/instance'
+  const url = API_BASE_URL + '/api/account'
+
   const { data, loading, error } = useFetch(url, options.current, {
     page: page,
     pageSize: pageSize,
@@ -53,105 +55,38 @@ function NetappCVOAggregates() {
       flex: 1,
     },
     {
-      field: '$WorkingEnvironment.name$',
-      headerName: 'Working Environment Name',
-      flex: 2,
-      valueGetter: (params) => {
-        return params.row.WorkingEnvironment.name
-      },
-    },
-    {
-      field: 'aggregateId',
-      headerName: 'UUID',
+      field: 'accountPublicId',
+      headerName: 'Account Public Id',
       flex: 1,
     },
     {
-      field: 'name',
-      headerName: 'Name',
-      flex: 2,
-    },
-    {
-      field: 'availableCapacityBytes',
-      headerName: 'Available Capacity (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'totalCapacityBytes',
-      headerName: 'Total Capacity (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'usedCapacityBytes',
-      headerName: 'Used Capacity (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'state',
-      headerName: 'State',
+      field: 'accountName',
+      headerName: 'Account Name',
       flex: 1,
     },
     {
-      field: 'encryptionType',
-      headerName: 'Encryption Type',
+      field: 'isSaas',
+      headerName: 'Is SaaS?',
       flex: 1,
     },
     {
-      field: 'encryptionKeyId',
-      headerName: 'Encryption Key ID',
+      field: 'isGov',
+      headerName: 'Is Gov?',
       flex: 1,
     },
     {
-      field: 'isRoot',
-      headerName: 'Is Root?',
+      field: 'isPrivatePreviewEnabled',
+      headerName: 'Is Private Preview Enabled?',
       flex: 1,
     },
     {
-      field: 'homeNode',
-      headerName: 'Home Node',
+      field: 'is3rdPartyServicesEnabled',
+      headerName: 'Is 3rd Party Services Enabled?',
       flex: 1,
     },
     {
-      field: 'ownerNode',
-      headerName: 'Owner Node',
-      flex: 1,
-    },
-    {
-      field: 'capacityTier',
-      headerName: 'Capacity Tier',
-      flex: 1,
-    },
-    {
-      field: 'capacityTierUsedBytes',
-      headerName: 'Capacity Tier Used (Bytes)',
-      flex: 2,
-      valueFormatter: (params) => params.value.toLocaleString('en-US'),
-    },
-    {
-      field: 'sidlEnabled',
-      headerName: 'SIDL Enabled?',
-      flex: 1,
-    },
-    {
-      field: 'snaplockType',
-      headerName: 'SnapLock Type',
-      flex: 1,
-    },
-    {
-      field: 'evCompatibilityType',
-      headerName: 'Elastic Volume Compatibility Type',
-      flex: 1,
-    },
-    {
-      field: 'iops',
-      headerName: 'IOPS',
-      flex: 1,
-    },
-    {
-      field: 'workingEnvironmentPublicId',
-      headerName: 'Working Environment ID',
+      field: 'accountSerial',
+      headerName: 'Account Serial',
       flex: 1,
     },
   ]
@@ -165,8 +100,8 @@ function NetappCVOAggregates() {
     <>
       <Box m="1.5rem 2.5rem">
         <Header
-          title="Netapp CVO Aggregates"
-          subtitle="All Netapp CVO aggregates"
+          title="Netapp CVO Accounts"
+          subtitle="All Netapp CVO Accounts"
         />
 
         <Box
@@ -200,12 +135,12 @@ function NetappCVOAggregates() {
             initialState={{
               columns: {
                 columnVisibilityModel: {
-                  aggregateId: false,
+                  // workingEnvironmentId: false,
                 },
               },
             }}
             loading={loading}
-            getRowId={(row) => row.aggregateId}
+            getRowId={(row) => row.accountPublicId}
             rows={(data && data.rows) || []}
             columns={columns}
             rowCount={(data && data.count) || 0}
@@ -238,4 +173,4 @@ function NetappCVOAggregates() {
   )
 }
 
-export default NetappCVOAggregates
+export default NetappCVOAccounts

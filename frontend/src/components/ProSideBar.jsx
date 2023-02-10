@@ -15,6 +15,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import FolderIcon from '@mui/icons-material/Folder'
 import AllInboxIcon from '@mui/icons-material/AllInbox'
 import SdStorageIcon from '@mui/icons-material/SdStorage'
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 
 function ProSideBar() {
   const sidebar = (
@@ -25,6 +26,13 @@ function ProSideBar() {
           Dashboard
         </MenuItem>
         <SubMenu icon={<AllInboxIcon />} label="NetApp CVO">
+          <MenuItem
+            icon={<AccountBalanceIcon />}
+            component={<Link to="/netappcvo/accounts" />}
+          >
+            {' '}
+            Accounts
+          </MenuItem>
           <MenuItem
             icon={<KeyIcon />}
             component={<Link to="/netappcvo/credentials" />}

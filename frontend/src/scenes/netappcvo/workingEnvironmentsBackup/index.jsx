@@ -48,6 +48,11 @@ function WorkingEnvironmentsBackup() {
 
   const columns = [
     {
+      field: 'updatedAt',
+      headerName: 'Updated At',
+      flex: 1,
+    },
+    {
       field: 'name',
       headerName: 'Name',
       flex: 1,
