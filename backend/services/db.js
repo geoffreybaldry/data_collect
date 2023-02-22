@@ -5,7 +5,7 @@ const AURORA_DB_PORT = process.env.AURORA_DB_PORT
 const AURORA_DB_DATABASE = process.env.AURORA_DB_DATABASE
 const AURORA_USERNAME = process.env.AURORA_USERNAME
 const AURORA_PASSWORD = process.env.AURORA_PASSWORD
-const AURORA_DIALECT = process.env.AURORA_DIALECT
+const DB_DIALECT = process.env.DB_DIALECT
 
 const LAMBDA_FUNCTION_TIMEOUT = process.env.LAMBDA_FUNCTION_TIMEOUT
 
@@ -20,9 +20,9 @@ const pool = {
 // A Singleton service class to contain calls to the Sequelize service
 class DB {
   constructor() {
-    if (AURORA_DIALECT === 'sqlite') {
+    if (DB_DIALECT === 'sqlite') {
       this.sequelize = new Sequelize({
-        dialect: AURORA_DIALECT,
+        dialect: DB_DIALECT,
         storage: 'data_collect.sqlite3',
       })
     } else {
@@ -33,7 +33,7 @@ class DB {
         {
           host: AURORA_DB_ENDPOINT,
           port: AURORA_DB_PORT,
-          dialect: AURORA_DIALECT,
+          dialect: DB_DIALECT,
           pool: pool,
         }
       )
